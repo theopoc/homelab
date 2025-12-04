@@ -7,5 +7,29 @@ includes:
 tasks:
   default:
     desc: Show available tasks
+    silent: true
     cmds:
-      - task --list-all
+      - |
+        echo ""
+        echo "  Homelab Infrastructure"
+        echo "  ======================"
+        echo ""
+        echo "  Quick Start:"
+        echo "    1. cp .env.example .env     # Configure credentials"
+        echo "    2. task argocd:generate-secrets"
+        echo "    3. task tg -- apply terraform/live/etcdme-nbg1-dc3"
+        echo "    4. task argocd:bootstrap"
+        echo ""
+        echo "  Secrets:"
+        echo "    argocd:generate-secrets   Generate and encrypt secrets"
+        echo ""
+        echo "  ArgoCD:"
+        echo "    argocd:bootstrap          Deploy ArgoCD + applications"
+        echo "    argocd:password           Get admin password"
+        echo ""
+        echo "  Terraform:"
+        echo "    tg -- plan <dir>          Plan infrastructure changes"
+        echo "    tg -- apply <dir>         Apply infrastructure changes"
+        echo "    tg:bootstrap              Initialize S3 backend"
+        echo "    tg:clean                  Clear terragrunt cache"
+        echo ""
