@@ -17,14 +17,15 @@ If we cannot replicate everything with IaC, the mission has failed.
 - Any imperative commands that change cluster state
 
 ### What TO do:
-- Modify ArgoCD Application manifests in `argocd/apps/`
+- Modify ArgoCD manifests in `argocd/base/` or `argocd/overlays/`
 - Update Terraform/Terragrunt configurations
 - Commit changes to git
 - Let ArgoCD sync automatically or trigger sync via ArgoCD CLI
 
 ## Project Structure
 
-- `terraform/` - Infrastructure as Code (Terragrunt modules)
-- `argocd/apps/` - ArgoCD Application definitions
-- `argocd/resources/` - Raw Kubernetes manifests managed by ArgoCD
-- `infrastructure/` - Helm values and infrastructure configs
+- `terraform/live/` - Per-cluster Terragrunt stacks
+- `terraform/modules/` - Reusable Terraform modules (cluster, dns, firewall)
+- `argocd/base/` - Shared manifests with placeholders
+- `argocd/overlays/` - Per-cluster config (secrets, domains, patches)
+- `tasks/` - Taskfile automation scripts

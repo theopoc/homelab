@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/sofianedjerbi/homelab
+    repoURL: REPO_URL_PLACEHOLDER
     targetRevision: HEAD
-    path: argocd/resources/routes
+    path: argocd/base/resources/routes
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

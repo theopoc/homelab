@@ -13,6 +13,30 @@ configMapGenerator:
     namespace: default
     literals:
       - domain=etcd.me
+      - repo-url=https://github.com/sofianedjerbi/homelab
+      - overlay-path=argocd/overlays/etcdme-nbg1-dc3
+
+# Repository configuration - replace placeholders
+replacements:
+  - source:
+      kind: ConfigMap
+      name: cluster-config
+      fieldPath: data.repo-url
+    targets:
+      - select:
+          kind: Application
+        fieldPaths:
+          - spec.source.repoURL
+  - source:
+      kind: ConfigMap
+      name: cluster-config
+      fieldPath: data.overlay-path
+    targets:
+      - select:
+          kind: Application
+          name: root-app
+        fieldPaths:
+          - spec.source.path
 
 # Patches to replace domain in various resources
 patches:

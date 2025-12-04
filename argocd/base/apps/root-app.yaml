@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/sofianedjerbi/homelab
+    repoURL: REPO_URL_PLACEHOLDER
     targetRevision: HEAD
-    path: argocd/overlays/etcdme
+    path: OVERLAY_PATH_PLACEHOLDER
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
