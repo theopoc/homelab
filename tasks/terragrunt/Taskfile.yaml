@@ -2,9 +2,10 @@ version: '3'
 
 tasks:
   default:
-    desc: Run terragrunt command
+    desc: Run terragrunt stack command
     summary: |
       Usage:
+        task tg -- generate terraform/live/etcdme-nbg1-dc3
         task tg -- plan terraform/live/etcdme-nbg1-dc3
         task tg -- apply terraform/live/etcdme-nbg1-dc3
     cmds:
@@ -14,15 +15,26 @@ tasks:
         CMD="${ARGS% *}"
 
         if [ -z "$ARGS" ] || [ "$CMD" = "$ARGS" ]; then
-          echo "Usage: task tg -- <command> <dir>"
+          echo "Usage: task tg -- <command> <path>"
+          echo ""
+          echo "Commands:"
+          echo "  generate   Generate stack from terragrunt.stack.hcl"
+          echo "  plan       Plan all units in stack"
+          echo "  apply      Apply all units in stack"
           echo ""
           echo "Examples:"
+          echo "  task tg -- generate terraform/live/etcdme-nbg1-dc3"
           echo "  task tg -- plan terraform/live/etcdme-nbg1-dc3"
           echo "  task tg -- apply terraform/live/etcdme-nbg1-dc3"
           exit 1
         fi
 
-        cd "$DIR" && terragrunt $CMD
+        cd "$DIR"
+        if [ "$CMD" = "generate" ]; then
+          terragrunt stack generate
+        else
+          terragrunt stack run $CMD
+        fi
 
   bootstrap:
     desc: Bootstrap S3 backend for Terraform state

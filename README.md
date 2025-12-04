@@ -20,8 +20,7 @@ cp .env.example .env
 task argocd:generate-secrets
 
 # 3. Deploy infrastructure
-cd terraform/live/etcdme-nbg1-dc3
-terragrunt run-all apply
+task tg -- apply terraform/live/etcdme-nbg1-dc3
 
 # 4. Bootstrap ArgoCD
 task argocd:bootstrap
@@ -40,10 +39,14 @@ tasks/              # Taskfile automation
 ## Tasks
 
 ```bash
-task --list                    # Show all tasks
+task                           # Show help
 task argocd:generate-secrets   # Generate encrypted secrets
 task argocd:bootstrap          # Deploy ArgoCD + apps
 task argocd:password           # Get ArgoCD admin password
+task tg -- generate <path>     # Generate stack units
+task tg -- plan <path>         # Plan all units
+task tg -- apply <path>        # Apply all units
+task tg:bootstrap              # Initialize S3 backend
 ```
 
 ## Adding a New Cluster
