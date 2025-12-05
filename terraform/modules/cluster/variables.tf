@@ -77,3 +77,9 @@ variable "talosconfig_path" {
   type        = string
   default     = null
 }
+
+variable "cluster_delete_protection" {
+  description = "Enable delete protection (set false to allow destroy)"
+  type        = bool
+  default     = true
+}

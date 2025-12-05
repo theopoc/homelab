@@ -32,6 +32,9 @@ unit "cluster" {
     gateway_api_enabled      = true
     gateway_api_version      = "v1.4.1"
     gateway_api_experimental = true  # Includes TLSRoute
+
+    # Set false to allow cluster destruction
+    cluster_delete_protection = false
   }
 }
 

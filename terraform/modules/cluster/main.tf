@@ -70,4 +70,7 @@ module "kubernetes" {
   # Output configs to files
   cluster_kubeconfig_path  = var.kubeconfig_path
   cluster_talosconfig_path = var.talosconfig_path
+
+  # Delete protection (set false to allow destroy)
+  cluster_delete_protection = var.cluster_delete_protection
 }
