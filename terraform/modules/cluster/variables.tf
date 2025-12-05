@@ -31,9 +31,27 @@ variable "worker_nodepools" {
 }
 
 variable "cilium_helm_values" {
-  description = "Custom Helm values for Cilium (enables Gateway API)"
+  description = "Custom Helm values for Cilium"
   type        = any
   default     = {}
+}
+
+variable "gateway_api_enabled" {
+  description = "Enable Gateway API CRDs installation"
+  type        = bool
+  default     = false
+}
+
+variable "gateway_api_version" {
+  description = "Gateway API version to install"
+  type        = string
+  default     = "v1.2.0"
+}
+
+variable "gateway_api_experimental" {
+  description = "Use experimental Gateway API features (includes TLSRoute)"
+  type        = bool
+  default     = true
 }
 
 variable "control_plane_config_patches" {

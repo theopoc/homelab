@@ -28,12 +28,10 @@ unit "cluster" {
     # No separate workers - schedule on control planes
     worker_nodepools = []
 
-    # Cilium with Gateway API support
-    cilium_helm_values = {
-      gatewayAPI = {
-        enabled = true
-      }
-    }
+    # Gateway API support (installs CRDs + enables Cilium Gateway controller)
+    gateway_api_enabled      = true
+    gateway_api_version      = "v1.2.0"
+    gateway_api_experimental = true  # Includes TLSRoute
   }
 }
 

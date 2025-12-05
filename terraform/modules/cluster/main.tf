@@ -1,6 +1,27 @@
 # Kubernetes cluster on Hetzner Cloud using Talos Linux
 # Uses: https://github.com/hcloud-k8s/terraform-hcloud-kubernetes
 
+locals {
+  # Gateway API manifest URL
+  gateway_api_manifest_url = var.gateway_api_enabled ? "https://github.com/kubernetes-sigs/gateway-api/releases/download/${var.gateway_api_version}/${var.gateway_api_experimental ? "experimental" : "standard"}-install.yaml" : null
+
+  # Merge Cilium helm values with Gateway API settings
+  cilium_helm_values = merge(
+    var.cilium_helm_values,
+    var.gateway_api_enabled ? {
+      gatewayAPI = {
+        enabled = true
+      }
+    } : {}
+  )
+}
+
+# Fetch Gateway API CRDs manifest
+data "http" "gateway_api_crds" {
+  count = var.gateway_api_enabled ? 1 : 0
+  url   = local.gateway_api_manifest_url
+}
+
 module "kubernetes" {
   source  = "hcloud-k8s/kubernetes/hcloud"
   version = "~> 3.13"
@@ -22,7 +43,7 @@ module "kubernetes" {
 
   # Cilium CNI with Gateway API support
   cilium_enabled     = true
-  cilium_helm_values = var.cilium_helm_values
+  cilium_helm_values = local.cilium_helm_values
 
   # Cert Manager
   cert_manager_enabled = true
@@ -37,6 +58,14 @@ module "kubernetes" {
   # Talos config patches for extensions
   control_plane_config_patches = var.control_plane_config_patches
   worker_config_patches        = var.worker_config_patches
+
+  # Gateway API CRDs as inline manifest
+  talos_extra_inline_manifests = var.gateway_api_enabled ? [
+    {
+      name     = "gateway-api-crds"
+      contents = data.http.gateway_api_crds[0].response_body
+    }
+  ] : null
 
   # Output configs to files
   cluster_kubeconfig_path  = var.kubeconfig_path
