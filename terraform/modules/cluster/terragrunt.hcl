@@ -24,4 +24,12 @@ inputs = {
 
   kubeconfig_path  = try(values.kubeconfig_path, null)
   talosconfig_path = try(values.talosconfig_path, null)
+
+  # Gateway API
+  gateway_api_enabled      = try(values.gateway_api_enabled, false)
+  gateway_api_version      = try(values.gateway_api_version, "v1.4.1")
+  gateway_api_experimental = try(values.gateway_api_experimental, true)
+
+  # Delete protection
+  cluster_delete_protection = try(values.cluster_delete_protection, true)
 }
