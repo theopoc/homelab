@@ -4,8 +4,11 @@ kind: Kustomization
 # Inherit from base
 resources:
   - ../../base
-  # All secrets in one SOPS-encrypted file
-  - secrets.sops.yaml
+
+# KSOPS generator for SOPS-encrypted secrets
+# ArgoCD decrypts via KSOPS plugin, kubectl skips this
+generators:
+  - ksops-generator.yaml
 
 # Domain configuration
 configMapGenerator:

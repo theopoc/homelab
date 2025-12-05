@@ -2,7 +2,6 @@ version: '3'
 
 vars:
   OVERLAY: etcdme-nbg1-dc3
-  ARGOCD_VERSION: 9.1.3
 
 tasks:
   generate-secrets:
@@ -13,17 +12,15 @@ tasks:
   bootstrap:
     desc: Bootstrap ArgoCD (run once after cluster creation)
     cmds:
-      - kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+      - echo "Creating namespaces..."
+      - |
+        for ns in argocd cert-manager keycloak postgres monitoring; do
+          kubectl create namespace $ns --dry-run=client -o yaml | kubectl apply -f -
+        done
       - echo "Applying secrets..."
       - sops -d argocd/overlays/{{.OVERLAY}}/secrets.sops.yaml | kubectl apply -f -
-      - echo "Installing ArgoCD via Helm..."
-      - helm repo add argo https://argoproj.github.io/argo-helm || true
-      - helm repo update
-      - helm upgrade --install argocd argo/argo-cd
-          --namespace argocd
-          --version {{.ARGOCD_VERSION}}
-          --set configs.secret.createSecret=false
-          --wait
+      - echo "Installing ArgoCD via Helmfile..."
+      - helmfile -f argocd/helmfile.yaml apply
       - echo "Applying ArgoCD applications..."
       - kubectl apply -k argocd/overlays/{{.OVERLAY}}
       - echo "✅ ArgoCD bootstrapped!"
