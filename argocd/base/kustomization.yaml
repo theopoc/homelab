@@ -13,15 +13,10 @@ resources:
   - apps/infrastructure/reloader.yaml
   - apps/monitoring/loki-stack.yaml
   - apps/monitoring/prometheus.yaml
-  # Resources
+  # Resources (only those NOT managed by child apps)
   - resources/cert-manager/cluster-issuer.yaml
-  - resources/gateway/gateway-class.yaml
-  - resources/gateway/main-gateway.yaml
-  # Keycloak via operator CRDs
+  # Keycloak via operator CRDs (no child app for these)
   - resources/keycloak/instance.yaml
   - resources/keycloak/realm-import.yaml
-  - resources/postgres/cluster.yaml
-  - resources/routes/argocd-route.yaml
-  - resources/routes/grafana-route.yaml
-  - resources/routes/keycloak-route.yaml
   # All secrets are in overlay secrets.sops.yaml
+  # NOTE: gateway, postgres/cluster, and routes are managed by child apps
