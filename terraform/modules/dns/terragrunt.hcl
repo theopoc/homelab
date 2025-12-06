@@ -17,6 +17,7 @@ terraform {
 inputs = {
   domain                = values.domain
   origin_ip             = dependency.cluster.outputs.primary_ip
+  gateway_ip            = try(values.gateway_ip, null)
   additional_subdomains = try(values.additional_subdomains, [])
   tags                  = try(values.tags, {})
 }

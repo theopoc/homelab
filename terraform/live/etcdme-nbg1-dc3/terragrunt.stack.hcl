@@ -48,8 +48,12 @@ unit "dns" {
     domain                = local.domain
     additional_subdomains = ["argo", "kube", "loki", "n8n", "auth"]
 
-    # Get floating IP from cluster output
+    # Get control plane IP from cluster output (for kube subdomain)
     cluster_path = "../cluster"
+
+    # Gateway LoadBalancer IP (from Cilium Gateway -> Hetzner CCM)
+    # Subdomains point here for ingress traffic
+    gateway_ip = "91.98.5.86"
 
     tags = {
       Environment = "production"

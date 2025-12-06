@@ -39,6 +39,7 @@ resource "aws_route53_record" "this" {
 }
 
 # Additional subdomain A records (e.g., argo.etcd.me)
+# Uses gateway_ip if set, otherwise falls back to origin_ip
 resource "aws_route53_record" "subdomains" {
   for_each = toset(var.additional_subdomains)
 
@@ -46,5 +47,5 @@ resource "aws_route53_record" "subdomains" {
   name    = "${each.value}.${var.domain}"
   type    = "A"
   ttl     = 300
-  records = [var.origin_ip]
+  records = [coalesce(var.gateway_ip, var.origin_ip)]
 }
