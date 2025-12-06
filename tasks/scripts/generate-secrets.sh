@@ -62,6 +62,7 @@ KEYCLOAK_DB_PASSWORD=$(gen_password)
 GRAFANA_ADMIN_PASSWORD=$(gen_password)
 OIDC_SECRET_GRAFANA=$(gen_secret)
 OIDC_SECRET_ARGOCD=$(gen_secret)
+ARGOCD_SERVER_SECRET=$(gen_secret)
 
 echo "Generated passwords:"
 echo "  - Keycloak admin password"
@@ -69,6 +70,7 @@ echo "  - Keycloak DB password"
 echo "  - Grafana admin password"
 echo "  - OIDC client secret (Grafana)"
 echo "  - OIDC client secret (ArgoCD)"
+echo "  - ArgoCD server secret key"
 echo ""
 
 # Copy example and replace values
@@ -98,7 +100,8 @@ sed -i "s|admin-password: REPLACE_ME|admin-password: ${GRAFANA_ADMIN_PASSWORD}|"
 # Grafana OAuth (must match oidc-client-secrets grafana)
 sed -i "s|GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: REPLACE_ME|GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ${OIDC_SECRET_GRAFANA}|" "$SECRETS_FILE"
 
-# ArgoCD OIDC (must match oidc-client-secrets argocd)
+# ArgoCD secrets
+sed -i "s|server.secretkey: REPLACE_ME|server.secretkey: ${ARGOCD_SERVER_SECRET}|" "$SECRETS_FILE"
 sed -i "s|oidc.keycloak.clientSecret: REPLACE_ME|oidc.keycloak.clientSecret: ${OIDC_SECRET_ARGOCD}|" "$SECRETS_FILE"
 
 echo -e "${GREEN}Secrets file created: ${SECRETS_FILE}${NC}"
