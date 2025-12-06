@@ -31,8 +31,8 @@ spec:
             policy.csv: |
               g, admin, role:admin
           secret:
-            # Let helm create the secret (no OIDC client secret needed with PKCE)
-            createSecret: true
+            # Use externally managed secret (no OIDC client secret needed with PKCE)
+            createSecret: false
           cmp:
             plugins:
               ksops:

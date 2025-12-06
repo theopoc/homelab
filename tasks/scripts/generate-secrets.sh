@@ -55,10 +55,12 @@ echo ""
 # Generate random secrets
 KEYCLOAK_DB_PASSWORD=$(gen_password)
 GRAFANA_ADMIN_PASSWORD=$(gen_password)
+ARGOCD_SERVER_SECRET=$(gen_password)
 
 echo "Generated passwords:"
 echo "  - Keycloak DB password"
 echo "  - Grafana admin password"
+echo "  - ArgoCD server secret key"
 echo ""
 
 # Copy example and replace values
@@ -79,6 +81,9 @@ sed -i "0,/password: REPLACE_ME/s|password: REPLACE_ME|password: ${KEYCLOAK_DB_P
 
 # Grafana admin
 sed -i "s|admin-password: REPLACE_ME|admin-password: ${GRAFANA_ADMIN_PASSWORD}|" "$SECRETS_FILE"
+
+# ArgoCD server secret
+sed -i "s|server.secretkey: REPLACE_ME|server.secretkey: ${ARGOCD_SERVER_SECRET}|" "$SECRETS_FILE"
 
 echo -e "${GREEN}Secrets file created: ${SECRETS_FILE}${NC}"
 echo ""
