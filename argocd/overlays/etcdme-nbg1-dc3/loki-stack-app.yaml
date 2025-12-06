@@ -22,6 +22,7 @@ spec:
             existingSecret: grafana-admin
             userKey: admin-user
             passwordKey: admin-password
+          envFromSecret: ""
           envFromSecrets: []
           sidecar:
             datasources:
