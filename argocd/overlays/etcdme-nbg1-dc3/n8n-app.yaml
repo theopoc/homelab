@@ -9,44 +9,39 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://8gears.container-registry.com/chartrepo/library
+    repoURL: https://community-charts.github.io/helm-charts
     chart: n8n
-    targetRevision: 1.0.1
+    targetRevision: 1.16.8
     helm:
       valuesObject:
-        main:
-          config:
-            db:
-              type: postgresdb
-              postgresdb:
-                host: postgres-rw.postgres.svc.cluster.local
-                port: 5432
-                database: n8n
-            generic:
-              timezone: Europe/Paris
-            executions:
-              pruneData: "true"
-              pruneDataMaxAge: 168
-          secret:
-            db:
-              postgresdb:
-                user:
-                  secretKeyRef:
-                    name: n8n-postgres
-                    key: DB_POSTGRESDB_USER
-                password:
-                  secretKeyRef:
-                    name: n8n-postgres
-                    key: DB_POSTGRESDB_PASSWORD
-          extraEnvSecrets:
-            N8N_ENCRYPTION_KEY:
-              name: n8n-encryption
-              key: N8N_ENCRYPTION_KEY
+        # Disable embedded PostgreSQL
+        postgresql:
+          enabled: false
+        # External PostgreSQL configuration
+        externalPostgresql:
+          host: postgres-rw.postgres.svc.cluster.local
+          port: 5432
+          database: n8n
+          username: n8n
+          existingSecret: n8n-postgres
+        # Encryption key from secret
+        existingEncryptionKeySecret: n8n-encryption
+        # Timezone
+        timezone: Europe/Paris
+        # Executions settings
+        config:
+          executions:
+            pruneData: "true"
+            pruneDataMaxAge: 168
+        # Ingress disabled (using gateway)
         ingress:
           enabled: false
+        # Service config
         service:
+          enabled: true
           type: ClusterIP
           port: 5678
+        # Resources
         resources:
           requests:
             cpu: 100m
