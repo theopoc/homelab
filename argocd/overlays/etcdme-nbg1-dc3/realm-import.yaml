@@ -4,6 +4,8 @@ kind: KeycloakRealmImport
 metadata:
   name: homelab-realm
   namespace: keycloak
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   keycloakCRName: keycloak
   realm:
@@ -157,12 +159,12 @@ spec:
       - groups
 
     # OIDC Clients with etcd.me domain
+    # Keycloak generates secrets - retrieve from admin console after bootstrap
     clients:
       - clientId: grafana
         name: Grafana
         enabled: true
         clientAuthenticatorType: client-secret
-        secret: "$(secret:oidc-client-secrets:grafana)"
         redirectUris:
           - "https://loki.etcd.me/*"
         webOrigins:
@@ -176,7 +178,6 @@ spec:
         name: ArgoCD
         enabled: true
         clientAuthenticatorType: client-secret
-        secret: "$(secret:oidc-client-secrets:argocd)"
         redirectUris:
           - "https://argo.etcd.me/auth/callback"
         webOrigins:
