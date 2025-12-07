@@ -1,19 +1,26 @@
 # Homelab
 
-Production-grade Kubernetes on Hetzner Cloud.
+High-availability Kubernetes on Hetzner Cloud. Built for resilience.
 
 ## Live
 
 **[etcd.me](https://etcd.me)** | [Portfolio](https://sofianedjerbi.com)
 
+## High Availability
+
+- **3 control plane nodes** with etcd quorum
+- **Self-healing** workloads via Kubernetes
+- **Automated failover** with Cilium Gateway API
+- **GitOps reconciliation** ensures desired state
+
 ## Stack
 
-- **Talos Linux** - Immutable Kubernetes OS
+- **Talos Linux** - Immutable, API-driven Kubernetes OS
 - **Terragrunt** - Infrastructure as Code
-- **ArgoCD** - GitOps deployments
-- **SOPS + age** - Secret encryption
-- **Cilium** - CNI with Gateway API
-- **Cloudflare** - DNS and SSL
+- **ArgoCD** - GitOps with automatic drift correction
+- **SOPS + age** - Encrypted secrets in Git
+- **Cilium** - eBPF networking + Gateway API
+- **Cloudflare** - Global DNS with health checks
 
 ## Structure
 
