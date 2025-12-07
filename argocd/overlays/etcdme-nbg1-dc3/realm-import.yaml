@@ -205,6 +205,7 @@ spec:
         protocol: openid-connect
         attributes:
           pkce.code.challenge.method: S256
+          post.logout.redirect.uris: "https://n8n.etcd.me/*"
         protocolMappers:
           # Audience mapper required for oauth2-proxy
           - name: audience

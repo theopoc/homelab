@@ -40,6 +40,16 @@ data:
 
             const layer = new Layer('/', { strict: false, end: false }, async (req, res, next) => {
               try {
+                // Intercept /signout for full SSO logout (before n8n's handler)
+                if (req.url === '/signout' || req.url.startsWith('/signout?')) {
+                  res.clearCookie(cookieName, { path: '/' });
+                  const keycloakLogout = process.env.N8N_KEYCLOAK_LOGOUT_URL || '';
+                  if (keycloakLogout) {
+                    return res.redirect(`/oauth2/sign_out?rd=${encodeURIComponent(keycloakLogout)}`);
+                  }
+                  return res.redirect('/oauth2/sign_out');
+                }
+
                 // Skip if URL matches ignore list
                 if (ignoreAuth.test(req.url)) return next();
 
@@ -156,19 +166,6 @@ data:
             // Insert middleware after cookieParser
             stack.splice(idx + 1, 0, layer);
             this.logger?.info('SSO middleware initialized successfully');
-
-            // Logout endpoint - chains: n8n -> oauth2-proxy -> Keycloak
-            // Intercept n8n's /signout to do full SSO logout
-            app.get('/signout', (req, res) => {
-              res.clearCookie(cookieName, { path: '/' });
-              const keycloakLogout = process.env.N8N_KEYCLOAK_LOGOUT_URL || '';
-              if (keycloakLogout) {
-                // Redirect to oauth2-proxy sign_out, which then redirects to Keycloak
-                res.redirect(`/oauth2/sign_out?rd=${encodeURIComponent(keycloakLogout)}`);
-              } else {
-                res.redirect('/oauth2/sign_out');
-              }
-            });
           }
         ]
       }
