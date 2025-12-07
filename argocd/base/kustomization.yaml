@@ -1,6 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# Generate ConfigMap from external JS file for better maintainability
+configMapGenerator:
+  - name: n8n-hooks
+    namespace: n8n
+    files:
+      - hooks.js=resources/n8n/hooks.js
+    options:
+      disableNameSuffixHash: true
+
 resources:
   # Apps
   - apps/root-app.yaml
@@ -24,9 +33,9 @@ resources:
   - resources/keycloak/route.yaml
   # Monitoring resources
   - resources/monitoring/prometheus-datasource.yaml
-  # n8n resources (namespace, jobs, routes, hooks)
+  # n8n resources (namespace, jobs, routes)
+  # Note: n8n-hooks ConfigMap is generated via configMapGenerator from hooks.js
   - resources/n8n/namespace.yaml
-  - resources/n8n/hooks-configmap.yaml
   - resources/n8n/keycloak-secret-sync.yaml
   - resources/n8n/postgres-init.yaml
   - resources/n8n/route.yaml

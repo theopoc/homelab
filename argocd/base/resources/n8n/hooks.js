@@ -1,0 +1,187 @@
+/**
+ * n8n SSO External Hooks
+ * Based on https://github.com/PavelSozonov/n8n-community-sso
+ *
+ * Enables authentication via oauth2-proxy with Keycloak SSO.
+ * Automatically creates users and issues session cookies based on
+ * the X-Forwarded-Email header from oauth2-proxy.
+ */
+
+module.exports = {
+  n8n: {
+    ready: [
+      async function ({ app }, config) {
+        const headerName = process.env.N8N_FORWARD_AUTH_HEADER;
+        if (!headerName) {
+          this.logger?.info('N8N_FORWARD_AUTH_HEADER not set; SSO middleware disabled.');
+          return;
+        }
+
+        this.logger?.info(`SSO middleware initializing with header: ${headerName}`);
+
+        const Layer = require('router/lib/layer');
+        const { dirname, resolve } = require('path');
+        const { randomBytes } = require('crypto');
+        const { hash } = require('bcryptjs');
+        const { issueCookie } = require(resolve(dirname(require.resolve('n8n')), 'auth/jwt'));
+
+        // Trust the proxy for correct X-Forwarded-* handling
+        app.set('trust proxy', 1);
+
+        const ignoreAuth = /^\/(assets|healthz|webhook|rest\/oauth2-credential|health)/;
+        const cookieName = 'n8n-auth';
+        const ssoLogoutCookie = 'sso-logout-pending';
+
+        const UserRepo = this.dbCollections.User;
+        const RoleRepo = this.dbCollections.Role;
+
+        const { stack } = app.router;
+        const idx = stack.findIndex((l) => l?.name === 'cookieParser');
+
+        const layer = new Layer('/', { strict: false, end: false }, async (req, res, next) => {
+          try {
+            // Check for pending SSO logout (set by /rest/logout)
+            // This triggers on the NEXT request after logout (e.g., page refresh)
+            if (req.cookies?.[ssoLogoutCookie]) {
+              res.clearCookie(ssoLogoutCookie, { path: '/' });
+              res.clearCookie(cookieName, { path: '/' });
+              const keycloakLogout = process.env.N8N_KEYCLOAK_LOGOUT_URL || '';
+              if (keycloakLogout) {
+                return res.redirect(`/oauth2/sign_out?rd=${encodeURIComponent(keycloakLogout)}`);
+              }
+              return res.redirect('/oauth2/sign_out');
+            }
+
+            // Intercept /rest/logout to set pending SSO logout cookie
+            // The actual SSO logout happens on the next request
+            if (req.url === '/rest/logout' || req.url.startsWith('/rest/logout?')) {
+              res.cookie(ssoLogoutCookie, 'true', {
+                path: '/',
+                httpOnly: true,
+                secure: true,
+                maxAge: 60000 // 1 minute expiry
+              });
+              // Let n8n handle the logout normally, cookie will trigger SSO logout next request
+              return next();
+            }
+
+            // Skip if URL matches ignore list
+            if (ignoreAuth.test(req.url)) return next();
+
+            // Skip until instance owner setup is complete
+            if (!config.get('userManagement.isInstanceOwnerSetUp', false)) return next();
+
+            // Skip if auth cookie already present
+            if (req.cookies?.[cookieName]) return next();
+
+            // Read email from headers
+            const emailHeader = req.headers[headerName.toLowerCase()] ?? req.headers[headerName];
+
+            // Extract names from JWT if available
+            const authHeader = req.headers['authorization'] || req.headers['x-auth-request-access-token'] || '';
+            let firstName = '';
+            let lastName = '';
+
+            if (authHeader) {
+              try {
+                const token = String(authHeader).replace(/^Bearer\s+/i, '');
+                const parts = token.split('.');
+                if (parts.length === 3) {
+                  const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
+                  firstName = payload.given_name || payload.firstName || '';
+                  lastName = payload.family_name || payload.lastName || '';
+                }
+              } catch (e) {
+                this.logger?.debug(`Failed to decode JWT: ${e.message}`);
+              }
+            }
+
+            // If no email header, skip
+            if (!emailHeader) {
+              return next();
+            }
+
+            const userEmail = Array.isArray(emailHeader) ? emailHeader[0] : String(emailHeader).trim();
+            const userFirstName = Array.isArray(firstName) ? firstName[0] : String(firstName).trim();
+            const userLastName = Array.isArray(lastName) ? lastName[0] : String(lastName).trim();
+
+            if (!userEmail) {
+              return next();
+            }
+
+            this.logger?.info(`SSO auto-login attempt for email: ${userEmail}`);
+
+            // Try to fetch user with role relation
+            let user = await UserRepo.findOne({
+              where: { email: userEmail },
+              relations: ['role'],
+            });
+
+            // Create user if not found
+            if (!user) {
+              const hashed = await hash(randomBytes(16).toString('hex'), 10);
+              const userData = {
+                email: userEmail,
+                role: 'global:member',
+                password: hashed,
+              };
+              if (userFirstName) userData.firstName = userFirstName;
+              if (userLastName) userData.lastName = userLastName;
+
+              const created = await UserRepo.createUserWithProject(userData);
+              user = created.user;
+              this.logger?.info(`Created new user: ${userEmail} via SSO`);
+            } else {
+              // Update names if changed
+              let changed = false;
+              if (userFirstName && user.firstName !== userFirstName) {
+                user.firstName = userFirstName;
+                changed = true;
+              }
+              if (userLastName && user.lastName !== userLastName) {
+                user.lastName = userLastName;
+                changed = true;
+              }
+              if (changed) {
+                await UserRepo.save(user);
+              }
+            }
+
+            // Ensure role exists (required for n8n 1.112.6+)
+            if (!user.role) {
+              if (user.roleId && RoleRepo) {
+                user.role = await RoleRepo.findOneBy({ id: user.roleId });
+              } else {
+                const reloaded = await UserRepo.findOne({
+                  where: { id: user.id },
+                  relations: ['role'],
+                });
+                if (reloaded) user = reloaded;
+              }
+            }
+
+            if (!user.role || !user.role.slug) {
+              res.statusCode = 401;
+              res.end(`User ${userEmail} has no valid role. Ask admin to assign a role.`);
+              return;
+            }
+
+            // Issue n8n auth cookie
+            issueCookie(res, user);
+            req.user = user;
+            req.userId = user.id;
+
+            return next();
+          } catch (error) {
+            this.logger?.error(`SSO middleware error: ${error.message}`);
+            return next(error);
+          }
+        });
+
+        // Insert middleware after cookieParser
+        stack.splice(idx + 1, 0, layer);
+        this.logger?.info('SSO middleware initialized successfully');
+      }
+    ]
+  }
+};
