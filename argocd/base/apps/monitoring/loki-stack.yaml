@@ -24,12 +24,6 @@ spec:
               enabled: true
           persistence:
             enabled: false
-          additionalDataSources:
-            - name: Prometheus
-              type: prometheus
-              url: http://prometheus-server.monitoring.svc.cluster.local
-              access: proxy
-              isDefault: true
           # Keycloak SSO
           grafana.ini:
             server:

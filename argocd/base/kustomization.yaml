@@ -22,6 +22,8 @@ resources:
   - resources/keycloak/instance.yaml
   - resources/keycloak/realm-import.yaml
   - resources/keycloak/route.yaml
+  # Monitoring resources
+  - resources/monitoring/prometheus-datasource.yaml
   # n8n resources (namespace, jobs, routes, hooks)
   - resources/n8n/namespace.yaml
   - resources/n8n/hooks-configmap.yaml
