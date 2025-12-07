@@ -114,3 +114,4 @@ patches:
   - path: uptime-kuma-oauth2-proxy-app.yaml
   - path: uptime-kuma-route.yaml
   - path: uptime-kuma-monitors.yaml
+  - path: landing-app.yaml

@@ -1,0 +1,23 @@
+# Landing page - static website for etcd.me root domain
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: landing
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sofianedjerbi/homelab
+    targetRevision: HEAD
+    path: argocd/overlays/etcdme-nbg1-dc3/resources/landing
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: landing
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
