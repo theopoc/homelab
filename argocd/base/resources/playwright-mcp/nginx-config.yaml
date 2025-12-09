@@ -10,7 +10,7 @@ data:
     pid /tmp/nginx.pid;
 
     events {
-        worker_connections 64;
+        worker_connections 1024;
     }
 
     http {
