@@ -15,6 +15,13 @@ spec:
       labels:
         app: filestash
     spec:
+      initContainers:
+        - name: init-dirs
+          image: busybox:latest
+          command: ['sh', '-c', 'mkdir -p /app/data/state/log && chmod -R 777 /app/data/state']
+          volumeMounts:
+            - name: data
+              mountPath: /app/data/state
       containers:
         - name: filestash
           image: machines/filestash:latest
