@@ -139,7 +139,8 @@ EOF
           modified_block="$secret_block"
 
           # Find all unique REPLACE_ placeholders and replace each with a unique password
-          placeholders=$(echo "$modified_block" | grep -oE 'REPLACE_[A-Z_]+' | sort -u)
+          # Note: pattern includes digits for placeholders like S3_ENDPOINT
+          placeholders=$(echo "$modified_block" | grep -oE 'REPLACE_[A-Z0-9_]+' | sort -ru)
           for placeholder in $placeholders; do
             new_password=$(gen_password)
             modified_block="${modified_block//$placeholder/$new_password}"
@@ -178,6 +179,8 @@ else
   UPTIME_KUMA_ADMIN_PASSWORD=$(gen_password)
   PLAYWRIGHT_MCP_TOKEN=$(gen_password)
   FILESTASH_CLIENT_SECRET=$(gen_password)
+  FILESTASH_SECRET_KEY=$(gen_password)
+  FILESTASH_ADMIN_PASSWORD=$(gen_password)
 
   echo "Generated passwords:"
   echo "  - Keycloak DB password"
@@ -192,6 +195,8 @@ else
   echo "  - Uptime Kuma admin password"
   echo "  - Playwright MCP token"
   echo "  - Filestash client secret"
+  echo "  - Filestash secret key"
+  echo "  - Filestash admin password"
   echo ""
 
   # Copy example and replace values
@@ -238,8 +243,21 @@ else
   # Playwright MCP token
   sed -i "s|token: REPLACE_PLAYWRIGHT_MCP_TOKEN|token: ${PLAYWRIGHT_MCP_TOKEN}|" "$SECRETS_FILE"
 
-  # Filestash client secret
-  sed -i "s|client-secret: REPLACE_FILESTASH_CLIENT_SECRET|client-secret: ${FILESTASH_CLIENT_SECRET}|" "$SECRETS_FILE"
+  # Filestash secrets
+  sed -i "s|client-secret: REPLACE_FILESTASH_CLIENT_SECRET|client-secret: ${FILESTASH_CLIENT_SECRET}|g" "$SECRETS_FILE"
+  sed -i "s|oidc-client-secret: REPLACE_FILESTASH_CLIENT_SECRET|oidc-client-secret: ${FILESTASH_CLIENT_SECRET}|" "$SECRETS_FILE"
+  sed -i "s|secret-key: REPLACE_FILESTASH_SECRET_KEY|secret-key: ${FILESTASH_SECRET_KEY}|" "$SECRETS_FILE"
+  sed -i "s|admin-password: REPLACE_FILESTASH_ADMIN_PASSWORD|admin-password: ${FILESTASH_ADMIN_PASSWORD}|" "$SECRETS_FILE"
+
+  # Filestash S3 backend (optional - from .env)
+  if [[ -n "${FILESTASH_S3_ENDPOINT:-}" ]]; then
+    sed -i "s|s3-endpoint: REPLACE_FILESTASH_S3_ENDPOINT|s3-endpoint: ${FILESTASH_S3_ENDPOINT}|" "$SECRETS_FILE"
+    sed -i "s|s3-access-key: REPLACE_FILESTASH_S3_ACCESS_KEY|s3-access-key: ${FILESTASH_S3_ACCESS_KEY}|" "$SECRETS_FILE"
+    sed -i "s|s3-secret-key: REPLACE_FILESTASH_S3_SECRET_KEY|s3-secret-key: ${FILESTASH_S3_SECRET_KEY}|" "$SECRETS_FILE"
+    sed -i "s|s3-bucket: REPLACE_FILESTASH_S3_BUCKET|s3-bucket: ${FILESTASH_S3_BUCKET}|" "$SECRETS_FILE"
+    sed -i "s|s3-region: REPLACE_FILESTASH_S3_REGION|s3-region: ${FILESTASH_S3_REGION:-us-east-1}|" "$SECRETS_FILE"
+    echo "  - Filestash S3 backend"
+  fi
 fi
 
 echo -e "${GREEN}Secrets file updated: ${SECRETS_FILE}${NC}"
