@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ../../base
   - n8n-client-setup.yaml
+  - playwright-mcp-route.yaml
 
 # KSOPS generator for SOPS-encrypted secrets
 # ArgoCD decrypts via KSOPS plugin, kubectl skips this
@@ -117,4 +118,3 @@ patches:
   - path: n8n-route.yaml
   - path: uptime-kuma-route.yaml
   - path: landing-app.yaml
-  - path: playwright-mcp-route.yaml
