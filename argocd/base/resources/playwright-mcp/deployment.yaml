@@ -5,6 +5,8 @@ metadata:
   namespace: playwright-mcp
   labels:
     app: playwright-mcp
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
@@ -16,6 +18,41 @@ spec:
         app: playwright-mcp
     spec:
       containers:
+        # Auth proxy sidecar - validates Bearer token before proxying
+        - name: auth-proxy
+          image: openresty/openresty:alpine
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+            - name: auth-token
+              mountPath: /etc/nginx/auth
+              readOnly: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+        # Playwright MCP server
         - name: playwright-mcp
           image: mcr.microsoft.com/playwright/mcp
           imagePullPolicy: Always
@@ -29,11 +66,7 @@ spec:
             - "--port"
             - "8931"
             - "--host"
-            - "0.0.0.0"
-          ports:
-            - containerPort: 8931
-              name: sse
-              protocol: TCP
+            - "127.0.0.1"
           resources:
             requests:
               cpu: 100m
@@ -43,15 +76,10 @@ spec:
               memory: 2Gi
           securityContext:
             allowPrivilegeEscalation: false
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8931
-            initialDelaySeconds: 10
-            periodSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8931
-            initialDelaySeconds: 5
-            periodSeconds: 10
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: playwright-mcp-nginx
+        - name: auth-token
+          secret:
+            secretName: playwright-mcp-auth

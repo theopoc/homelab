@@ -8,9 +8,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8931
-      targetPort: 8931
+    - port: 8080
+      targetPort: 8080
       protocol: TCP
-      name: sse
+      name: http
   selector:
     app: playwright-mcp
