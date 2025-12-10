@@ -22,22 +22,53 @@ data:
     	"golang.org/x/crypto/bcrypt"
     )
 
-    func Hash(str string, n int) []byte {
-    	h := sha256.New()
-    	h.Write([]byte(str))
-    	return h.Sum(nil)[:n]
+    var Letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+    func ReversedBaseChange(alphabet []rune, i int) string {
+    	str := ""
+    	for {
+    		str += string(alphabet[i%len(alphabet)])
+    		i = i / len(alphabet)
+    		if i == 0 {
+    			break
+    		}
+    	}
+    	return str
+    }
+
+    func hashSize(b []byte, n int) string {
+    	h := ""
+    	for i := 0; i < len(b); i++ {
+    		if n > 0 && len(h) >= n {
+    			break
+    		}
+    		h += ReversedBaseChange(Letters, int(b[i]))
+    	}
+    	if len(h) > n {
+    		return h[0 : len(h)-1]
+    	}
+    	return h
+    }
+
+    func Hash(str string, n int) string {
+    	hasher := sha256.New()
+    	hasher.Write([]byte(str))
+    	return hashSize(hasher.Sum(nil), n)
     }
 
     func Encrypt(secret string, plaintext []byte) string {
+    	// Derive key the same way Filestash does:
+    	// 1. SECRET_KEY_DERIVATE_FOR_PROOF = Hash("PROOF_" + secret, len(secret))
+    	// 2. key = Hash(derivate, 16) -> 16-char base62 string used as AES key
     	derivedKey := Hash("PROOF_"+secret, len(secret))
-    	key := Hash(string(derivedKey), 16)
+    	key := Hash(derivedKey, 16)
 
-    	block, _ := aes.NewCipher(key)
+    	block, _ := aes.NewCipher([]byte(key))
     	gcm, _ := cipher.NewGCM(block)
 
-    	// Compress
+    	// Compress (use default level like Filestash does)
     	compressed := bytes.NewBuffer(nil)
-    	w, _ := zlib.NewWriterLevel(compressed, zlib.BestCompression)
+    	w := zlib.NewWriter(compressed)
     	w.Write(plaintext)
     	w.Close()
 
