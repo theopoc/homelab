@@ -204,8 +204,9 @@ data:
     				},
     			},
     			"attribute_mapping": map[string]interface{}{
-    				"related_backend": "s3",
+    				"related_backend": "Cloud Storage",
     				"params": map[string]interface{}{
+    					"type":              "s3",
     					"endpoint":          s3Endpoint,
     					"access_key_id":     s3AccessKey,
     					"secret_access_key": s3SecretKey,
