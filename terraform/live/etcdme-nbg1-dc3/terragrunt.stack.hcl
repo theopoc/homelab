@@ -6,7 +6,20 @@ locals {
   domain       = "etcd.me"
 }
 
-# Kubernetes cluster (includes firewall, floating IP, Cilium, Cert-Manager, Longhorn)
+# Firewall management - runs BEFORE cluster to avoid chicken-and-egg with API health checks
+unit "firewall" {
+  source = "../../modules/firewall"
+  path   = "firewall"
+
+  values = {
+    firewall_name   = local.cluster_name
+    hcloud_token    = get_env("HCLOUD_TOKEN")
+    use_current_ip  = true
+    extra_admin_ips = []
+  }
+}
+
+# Kubernetes cluster (uses external firewall from firewall module)
 unit "cluster" {
   source = "../../modules/cluster"
   path   = "cluster"
@@ -14,6 +27,9 @@ unit "cluster" {
   values = {
     cluster_name = local.cluster_name
     hcloud_token = get_env("HCLOUD_TOKEN")
+
+    # External firewall management
+    firewall_path = "../firewall"
 
     # Control plane nodes (3x CX33 for HA with adequate resources)
     control_plane_nodepools = [

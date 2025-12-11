@@ -50,7 +50,7 @@ spec:
                 CLIENT_ID=$(/opt/keycloak/bin/kcadm.sh get clients -r homelab -q clientId=filestash --fields id | grep -o '"id" : "[^"]*"' | cut -d'"' -f4)
                 /opt/keycloak/bin/kcadm.sh update clients/$CLIENT_ID -r homelab \
                   -s "secret=$FILESTASH_CLIENT_SECRET" \
-                  -s 'redirectUris=["https://drive.etcd.me/oauth2/callback"]' \
+                  -s 'redirectUris=["https://drive.etcd.me/api/session/auth/"]' \
                   -s 'webOrigins=["https://drive.etcd.me"]' \
                   -s 'attributes={"post.logout.redirect.uris":"https://drive.etcd.me/*"}'
                 echo "Client updated"
@@ -63,7 +63,7 @@ spec:
                   -s publicClient=false \
                   -s clientAuthenticatorType=client-secret \
                   -s "secret=$FILESTASH_CLIENT_SECRET" \
-                  -s 'redirectUris=["https://drive.etcd.me/oauth2/callback"]' \
+                  -s 'redirectUris=["https://drive.etcd.me/api/session/auth/"]' \
                   -s 'webOrigins=["https://drive.etcd.me"]' \
                   -s standardFlowEnabled=true \
                   -s directAccessGrantsEnabled=false \

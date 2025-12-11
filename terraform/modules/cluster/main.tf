@@ -1,5 +1,6 @@
 # Kubernetes cluster on Hetzner Cloud using Talos Linux
-# Uses: https://github.com/hcloud-k8s/terraform-hcloud-kubernetes
+# Uses fork with external firewall support:
+# https://github.com/sofianedjerbi/terraform-hcloud-kubernetes
 
 locals {
   # Gateway API manifest URL
@@ -23,8 +24,7 @@ data "http" "gateway_api_crds" {
 }
 
 module "kubernetes" {
-  source  = "hcloud-k8s/kubernetes/hcloud"
-  version = "~> 3.13"
+  source = "git::https://github.com/sofianedjerbi/terraform-hcloud-kubernetes.git?ref=feat/external-firewall-support"
 
   cluster_name = var.cluster_name
   hcloud_token = var.hcloud_token
@@ -38,8 +38,9 @@ module "kubernetes" {
   # Floating IP for ingress
   control_plane_public_vip_ipv4_enabled = true
 
-  # Firewall - allow current IP for API access
-  firewall_use_current_ipv4 = true
+  # External firewall management (managed by firewall module)
+  firewall_id               = var.firewall_id
+  firewall_use_current_ipv4 = var.firewall_id == null
 
   # Cilium CNI with Gateway API support
   cilium_enabled     = true

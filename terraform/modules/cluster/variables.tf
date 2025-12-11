@@ -89,3 +89,9 @@ variable "cluster_graceful_destroy" {
   type        = bool
   default     = true
 }
+
+variable "firewall_id" {
+  description = "External firewall ID (if set, cluster module won't create its own firewall)"
+  type        = string
+  default     = null
+}

@@ -5,6 +5,17 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
+# Optional dependency on firewall module for external firewall management
+dependency "firewall" {
+  config_path  = try(values.firewall_path, "../firewall")
+  skip_outputs = try(values.firewall_path, null) == null
+
+  mock_outputs = {
+    firewall_id = null
+  }
+  mock_outputs_allowed_terraform_commands = ["validate", "plan"]
+}
+
 terraform {
   source = "./"
 
@@ -39,4 +50,7 @@ inputs = {
 
   # Graceful destroy
   cluster_graceful_destroy = try(values.cluster_graceful_destroy, true)
+
+  # External firewall (from firewall module)
+  firewall_id = try(values.firewall_path, null) != null ? dependency.firewall.outputs.firewall_id : null
 }

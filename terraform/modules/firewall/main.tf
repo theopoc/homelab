@@ -1,8 +1,10 @@
-# Standalone firewall management module
-# This module manages admin IPs for the cluster firewall independently
-# to avoid chicken-and-egg problems with API health checks
+# Firewall Module
+# Manages admin IPs for cluster API access independently
+# This avoids chicken-and-egg problems with API health checks
 
 terraform {
+  required_version = ">= 1.0"
+
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
@@ -13,6 +15,10 @@ terraform {
       version = ">= 3.0.0"
     }
   }
+}
+
+provider "hcloud" {
+  token = var.hcloud_token
 }
 
 # Get current public IPs
@@ -27,7 +33,7 @@ data "http" "ipv6" {
 }
 
 locals {
-  # Build source IPs list
+  # Build source IPs list from current IP + extra admin IPs
   current_ipv4 = var.use_current_ip && length(data.http.ipv4) > 0 ? ["${trimspace(data.http.ipv4[0].response_body)}/32"] : []
   current_ipv6 = var.use_current_ip && length(data.http.ipv6) > 0 ? ["${trimspace(data.http.ipv6[0].response_body)}/128"] : []
 
@@ -38,13 +44,15 @@ locals {
   ))
 }
 
-# Get existing firewall
+# Get existing firewall to preserve labels
 data "hcloud_firewall" "cluster" {
   name = var.firewall_name
 }
 
-# Update firewall rules
-resource "hcloud_firewall" "cluster" {
+# Manage firewall rules
+# NOTE: This takes over management from the cluster module.
+# The firewall must be imported into this module's state first.
+resource "hcloud_firewall" "this" {
   name   = var.firewall_name
   labels = data.hcloud_firewall.cluster.labels
 
@@ -65,11 +73,7 @@ resource "hcloud_firewall" "cluster" {
   }
 
   lifecycle {
-    # Ignore changes to apply_to since that's managed by the cluster module
+    # Ignore apply_to - managed by cluster module's server resources
     ignore_changes = [apply_to]
   }
-}
-
-output "source_ips" {
-  value = local.source_ips
 }

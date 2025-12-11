@@ -43,7 +43,28 @@ spec:
                 secretKeyRef:
                   name: filestash-config
                   key: admin-password
-            # OIDC handled by oauth2-proxy - no native OIDC config needed
+            - name: FORCE_REGENERATE
+              value: "true"
+            # Native OIDC authentication
+            - name: OIDC_CONFIG_URL
+              valueFrom:
+                secretKeyRef:
+                  name: filestash-config
+                  key: oidc-config-url
+                  optional: true
+            - name: OIDC_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: filestash-config
+                  key: oidc-client-id
+                  optional: true
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: filestash-config
+                  key: oidc-client-secret
+                  optional: true
+            # S3 backend
             - name: S3_ENDPOINT
               valueFrom:
                 secretKeyRef:

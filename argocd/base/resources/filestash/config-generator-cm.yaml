@@ -162,8 +162,10 @@ data:
     		fmt.Println("Admin password configured")
     	}
 
-    	// Note: Authentication is handled by oauth2-proxy in front of Filestash
-    	// No native OIDC middleware configuration needed
+    	// Configure OIDC authentication
+    	oidcConfigURL := os.Getenv("OIDC_CONFIG_URL")
+    	oidcClientID := os.Getenv("OIDC_CLIENT_ID")
+    	oidcClientSecret := os.Getenv("OIDC_CLIENT_SECRET")
 
     	// Add S3 backend
     	s3Endpoint := os.Getenv("S3_ENDPOINT")
@@ -190,10 +192,31 @@ data:
     		}
     		fmt.Println("S3 backend configured")
 
-    		// Note: Middleware configuration removed - Filestash's passthrough middleware
-    		// has encryption issues when configured programmatically. Users will see
-    		// the S3 backend option and need to click connect (credentials are pre-filled
-    		// in connections array above)
+    		// Configure OIDC middleware if credentials provided
+    		if oidcConfigURL != "" && oidcClientID != "" && oidcClientSecret != "" {
+    			config["middleware"] = map[string]interface{}{
+    				"identity_provider": map[string]interface{}{
+    					"type":              "openid",
+    					"openid_config_url": oidcConfigURL,
+    					"client_id":         oidcClientID,
+    					"client_secret":     oidcClientSecret,
+    					"scope":             "openid profile email",
+    				},
+    				"attribute_mapping": map[string]interface{}{
+    					"related_backend": "s3",
+    					"params": map[string]interface{}{
+    						"type":              "s3",
+    						"endpoint":          s3Endpoint,
+    						"access_key_id":     s3AccessKey,
+    						"secret_access_key": s3SecretKey,
+    						"bucket":            s3Bucket,
+    						"region":            s3Region,
+    						"path":              "/",
+    					},
+    				},
+    			}
+    			fmt.Println("OIDC middleware configured with S3 backend")
+    		}
     	}
 
     	// Write config
