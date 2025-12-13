@@ -27,13 +27,9 @@ spec:
           image: openresty/openresty:alpine
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
-          ports:
-            - containerPort: 8080
-              name: http
-              protocol: TCP
           volumeMounts:
             - name: nginx-config
               mountPath: /usr/local/openresty/nginx/conf/nginx.conf
@@ -42,6 +38,14 @@ spec:
             - name: auth-token
               mountPath: /etc/nginx/auth
               readOnly: true
+            - name: nginx-tmp
+              mountPath: /var/run/openresty
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
           resources:
             requests:
               cpu: 10m
@@ -86,10 +90,23 @@ spec:
               memory: 2Gi
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
+          volumeMounts:
+            - name: playwright-tmp
+              mountPath: /tmp
+            - name: playwright-home
+              mountPath: /home/pwuser
       volumes:
+        - name: nginx-tmp
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: playwright-tmp
+          emptyDir: {}
+        - name: playwright-home
+          emptyDir: {}
         - name: nginx-config
           configMap:
             name: playwright-mcp-nginx
