@@ -1,0 +1,4 @@
+# False positive: nginx-config.yaml contains Lua code that reads tokens from
+# mounted secrets and validates them - it's auth logic, not secret storage
+# The actual token is stored in a Kubernetes Secret (playwright-mcp-auth)
+AVD-KSV-0109

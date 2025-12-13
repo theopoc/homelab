@@ -11,9 +11,30 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: setup
           image: quay.io/keycloak/keycloak:26.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: kcadm-config
+              mountPath: /opt/keycloak/bin/.kcadm
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
           command:
             - /bin/bash
             - -c
@@ -84,3 +105,8 @@ spec:
                 secretKeyRef:
                   name: n8n-client-secret
                   key: client-secret
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: kcadm-config
+          emptyDir: {}
