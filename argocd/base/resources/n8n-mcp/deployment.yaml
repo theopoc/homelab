@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n-mcp
+  namespace: n8n-mcp
+  labels:
+    app: n8n-mcp
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n-mcp
+  template:
+    metadata:
+      labels:
+        app: n8n-mcp
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        # Auth proxy sidecar - validates Bearer token before proxying
+        - name: auth-proxy
+          image: openresty/openresty:alpine
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /usr/local/openresty/nginx/conf/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+            - name: auth-token
+              mountPath: /etc/nginx/auth
+              readOnly: true
+            - name: nginx-tmp
+              mountPath: /var/run/openresty
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+        # n8n MCP server - workflow building assistant for LLMs
+        - name: n8n-mcp
+          image: ghcr.io/czlonkowski/n8n-mcp:latest
+          env:
+            - name: MCP_MODE
+              value: "http"
+            - name: PORT
+              value: "3000"
+            - name: LOG_LEVEL
+              value: "info"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: n8n-mcp-tmp
+              mountPath: /tmp
+            - name: n8n-mcp-home
+              mountPath: /home/node
+      volumes:
+        - name: nginx-tmp
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: n8n-mcp-tmp
+          emptyDir: {}
+        - name: n8n-mcp-home
+          emptyDir: {}
+        - name: nginx-config
+          configMap:
+            name: n8n-mcp-nginx
+        - name: auth-token
+          secret:
+            secretName: n8n-mcp-auth
