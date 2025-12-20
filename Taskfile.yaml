@@ -1,7 +1,7 @@
 version: '3'
 
 includes:
-  tg: ./tasks/terragrunt/Taskfile.yaml
+  terragrunt : ./tasks/terragrunt/Taskfile.yaml
   argocd: ./tasks/argocd/Taskfile.yaml
 
 tasks:
@@ -17,7 +17,7 @@ tasks:
         echo "  Quick Start:"
         echo "    1. cp .env.example .env     # Configure credentials"
         echo "    2. task argocd:generate-secrets"
-        echo "    3. task tg -- stack run apply terraform/live/etcdme-nbg1-dc3"
+        echo "    3. task terragrunt -- stack run apply terraform/live/hometheo"
         echo "    4. task argocd:bootstrap"
         echo ""
         echo "  Secrets:"
@@ -31,7 +31,7 @@ tasks:
         echo "    argocd:grafana-admin      Get Grafana admin credentials"
         echo ""
         echo "  Terragrunt:"
-        echo "    tg -- <cmd> <path>        Run terragrunt command in path"
-        echo "    tg:bootstrap              Initialize S3 backend"
-        echo "    tg:clean                  Clear cache"
+        echo "   terragrunt -- <cmd> <path>        Run terragrunt command in path"
+        echo "   terragrunt :bootstrap              Initialize S3 backend"
+        echo "   terragrunt :clean                  Clear cache"
         echo ""

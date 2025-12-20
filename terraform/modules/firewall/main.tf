@@ -45,16 +45,16 @@ locals {
 }
 
 # Get existing firewall to preserve labels
-data "hcloud_firewall" "cluster" {
-  name = var.firewall_name
-}
+# data "hcloud_firewall" "cluster" {
+#   name = var.firewall_name
+# }
 
 # Manage firewall rules
 # NOTE: This takes over management from the cluster module.
 # The firewall must be imported into this module's state first.
 resource "hcloud_firewall" "this" {
   name   = var.firewall_name
-  labels = data.hcloud_firewall.cluster.labels
+  labels = var.labels
 
   rule {
     description = "Allow Incoming Requests to Kube API"

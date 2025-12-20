@@ -23,15 +23,15 @@ locals {
   })
 }
 
-# Look up the hosted zone by domain name
-data "aws_route53_zone" "this" {
-  name         = "${local.root_domain}."
-  private_zone = false
+
+resource "aws_route53_zone" "this" {
+  name = "${local.root_domain}."
 }
+
 
 # DNS A record pointing to gateway IP (for ingress traffic) or origin IP
 resource "aws_route53_record" "this" {
-  zone_id = data.aws_route53_zone.this.zone_id
+  zone_id = aws_route53_zone.this.zone_id
   name    = var.domain
   type    = "A"
   ttl     = 300
@@ -43,7 +43,7 @@ resource "aws_route53_record" "this" {
 resource "aws_route53_record" "subdomains" {
   for_each = toset(var.additional_subdomains)
 
-  zone_id = data.aws_route53_zone.this.zone_id
+  zone_id = aws_route53_zone.this.zone_id
   name    = "${each.value}.${var.domain}"
   type    = "A"
   ttl     = 300

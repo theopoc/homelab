@@ -20,3 +20,9 @@ variable "hcloud_token" {
   type        = string
   sensitive   = true
 }
+
+variable "labels" {
+  description = "Labels"
+  type = map(string)
+  default = {}
+}

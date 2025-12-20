@@ -15,7 +15,7 @@ set -euo pipefail
 
 # Parse arguments
 UPDATE_MODE=false
-OVERLAY="etcdme-nbg1-dc3"
+OVERLAY="hometheo"
 
 while [[ $# -gt 0 ]]; do
   case $1 in

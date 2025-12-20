@@ -5,9 +5,9 @@ tasks:
     desc: Run terragrunt command
     summary: |
       Usage:
-        task tg -- stack generate terraform/live/etcdme-nbg1-dc3
-        task tg -- stack run plan terraform/live/etcdme-nbg1-dc3
-        task tg -- stack run apply terraform/live/etcdme-nbg1-dc3
+        task terragrunt -- stack generate terraform/live/hometheo
+        task terragrunt -- stack run plan terraform/live/hometheo
+        task terragrunt -- stack run apply terraform/live/hometheo
     cmds:
       - |
         ARGS="{{.CLI_ARGS}}"
@@ -15,12 +15,12 @@ tasks:
         CMD="${ARGS% *}"
 
         if [ -z "$ARGS" ] || [ "$CMD" = "$ARGS" ]; then
-          echo "Usage: task tg -- <command> <path>"
+          echo "Usage: task terragrunt -- <command> <path>"
           echo ""
           echo "Examples:"
-          echo "  task tg -- stack generate terraform/live/etcdme-nbg1-dc3"
-          echo "  task tg -- stack run plan terraform/live/etcdme-nbg1-dc3"
-          echo "  task tg -- stack run apply terraform/live/etcdme-nbg1-dc3"
+          echo "  task terragrunt -- stack generate terraform/live/hometheo"
+          echo "  task terragrunt -- stack run plan terraform/live/hometheo"
+          echo "  task terragrunt -- stack run apply terraform/live/hometheo"
           exit 1
         fi
 
@@ -32,18 +32,19 @@ tasks:
       - |
         echo "Bootstrapping S3 backend..."
 
-        if aws s3api head-bucket --bucket "${TF_STATE_BUCKET}" 2>/dev/null; then
+        if aws s3api head-bucket --bucket "${TF_STATE_BUCKET}" --no-cli-pager 2>/dev/null; then
           echo "✓ Bucket already exists."
         else
           aws s3api create-bucket \
             --bucket "${TF_STATE_BUCKET}" \
             --region "${AWS_REGION}" \
+            --no-cli-pager \
             $(if [ "${AWS_REGION}" != "us-east-1" ]; then echo "--create-bucket-configuration LocationConstraint=${AWS_REGION}"; fi)
         fi
 
-        aws s3api put-bucket-versioning --bucket "${TF_STATE_BUCKET}" --versioning-configuration Status=Enabled
-        aws s3api put-bucket-encryption --bucket "${TF_STATE_BUCKET}" --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
-        aws s3api put-public-access-block --bucket "${TF_STATE_BUCKET}" --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+        aws s3api put-bucket-versioning --bucket "${TF_STATE_BUCKET}" --versioning-configuration Status=Enabled --no-cli-pager
+        aws s3api put-bucket-encryption --bucket "${TF_STATE_BUCKET}" --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}' --no-cli-pager
+        aws s3api put-public-access-block --bucket "${TF_STATE_BUCKET}" --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true" --no-cli-pager
 
         echo "✅ Bootstrap complete!"
 

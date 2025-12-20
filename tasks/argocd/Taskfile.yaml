@@ -1,7 +1,7 @@
 version: '3'
 
 vars:
-  OVERLAY: etcdme-nbg1-dc3
+  OVERLAY: hometheo
   REPO_URL: https://github.com/sofianedjerbi/homelab
 
 tasks:

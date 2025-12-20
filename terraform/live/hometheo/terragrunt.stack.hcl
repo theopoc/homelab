@@ -2,8 +2,12 @@
 # Production-grade Kubernetes cluster on Hetzner Cloud
 
 locals {
-  cluster_name = "etcdme"
-  domain       = "etcd.me"
+  cluster_name = "hometheo"
+  domain       = "hometheo.click"
+
+  labels = {
+    managed_by = "terraform"
+  }
 }
 
 # Firewall management - runs BEFORE cluster to avoid chicken-and-egg with API health checks
@@ -16,6 +20,7 @@ unit "firewall" {
     hcloud_token    = get_env("HCLOUD_TOKEN")
     use_current_ip  = true
     extra_admin_ips = []
+    labels          = local.labels
   }
 }
 
@@ -31,13 +36,12 @@ unit "cluster" {
     # External firewall management
     firewall_path = "../firewall"
 
-    # Control plane nodes (3x CX33 for HA with adequate resources)
     control_plane_nodepools = [
       {
         name     = "control-plane"
         type     = "cx33"
         location = "nbg1"
-        count    = 3
+        count    = 1
       }
     ]
 
@@ -62,7 +66,8 @@ unit "dns" {
 
   values = {
     domain                = local.domain
-    additional_subdomains = ["argo", "kube", "loki", "n8n", "auth", "uptime", "playwright.mcp"]
+    #additional_subdomains = ["argo", "kube", "loki", "n8n", "auth", "uptime", "playwright.mcp"]
+    additional_subdomains = ["kube"]
 
     # Get control plane IP from cluster output (for kube subdomain)
     cluster_path = "../cluster"

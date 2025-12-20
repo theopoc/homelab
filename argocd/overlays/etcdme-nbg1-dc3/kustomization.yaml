@@ -20,9 +20,9 @@ configMapGenerator:
     literals:
       - domain=etcd.me
       - repo-url=https://github.com/sofianedjerbi/homelab
-      - overlay-path=argocd/overlays/etcdme-nbg1-dc3
-      - gateway-path=argocd/overlays/etcdme-nbg1-dc3/resources/gateway
-      - routes-path=argocd/overlays/etcdme-nbg1-dc3/resources/routes
+      - overlay-path=argocd/overlays/hometheo
+      - gateway-path=argocd/overlays/hometheo/resources/gateway
+      - routes-path=argocd/overlays/hometheo/resources/routes
 
 # Repository configuration - replace placeholders only in apps that use them
 replacements:
@@ -93,8 +93,8 @@ replacements:
           - spec.source.path
 
 # Patches to replace domain in various resources
-# Note: Gateway patches are in overlays/etcdme-nbg1-dc3/resources/gateway/kustomization.yaml
-# Note: Route patches are in overlays/etcdme-nbg1-dc3/resources/routes/kustomization.yaml
+# Note: Gateway patches are in overlays/hometheo/resources/gateway/kustomization.yaml
+# Note: Route patches are in overlays/hometheo/resources/routes/kustomization.yaml
 patches:
   # keycloak-route is managed by root-app, not argocd-routes
   - target:

@@ -2,10 +2,6 @@
 
 High-availability Kubernetes on Hetzner Cloud. Built for resilience.
 
-## Live
-
-**[etcd.me](https://etcd.me)** | [Portfolio](https://sofianedjerbi.com)
-
 ## High Availability
 
 - **3 control plane nodes** with etcd quorum
@@ -34,11 +30,27 @@ argocd/
 tasks/            # Automation
 ```
 
+## Prerequisite
+[mise](https://mise.jdx.dev/installing-mise.html) installed
+
 ## Bootstrap
 
+### Install neccesary tools with mise
 ```bash
-task tg -- stack run apply terraform/live/etcdme-nbg1-dc3
+mise install
+```
+
+### Generate sops age key
+```bash
+age-keygen --output agekey.txt
+```
+
+### Fill information on .env
+Copy [.env.example](.env.example) into .env and fill it
+
+```bash
 task argocd:bootstrap
+task terragrunt -- stack run apply terraform/live/hometheo
 ```
 
 ## Services
@@ -47,4 +59,4 @@ Postgres, Keycloak, Grafana, Loki, Uptime Kuma, n8n, and more.
 
 ---
 
-Built by [Sofiane Djerbi](https://sofianedjerbi.com)
+Inspired by [Sofiane Djerbi](https://sofianedjerbi.com)
