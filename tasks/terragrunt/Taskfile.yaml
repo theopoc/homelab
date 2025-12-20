@@ -1,30 +1,20 @@
 version: '3'
 
 tasks:
-  default:
-    desc: Run terragrunt command
-    summary: |
-      Usage:
-        task terragrunt -- stack generate terraform/live/hometheo
-        task terragrunt -- stack run plan terraform/live/hometheo
-        task terragrunt -- stack run apply terraform/live/hometheo
-    cmds:
-      - |
-        ARGS="{{.CLI_ARGS}}"
-        DIR="${ARGS##* }"
-        CMD="${ARGS% *}"
+  generate:
+    desc: terragrunt stack generate
+    dir: terraform/live/hometheo
+    cmd: terragrunt stack generate {{.CLI_ARGS}}
 
-        if [ -z "$ARGS" ] || [ "$CMD" = "$ARGS" ]; then
-          echo "Usage: task terragrunt -- <command> <path>"
-          echo ""
-          echo "Examples:"
-          echo "  task terragrunt -- stack generate terraform/live/hometheo"
-          echo "  task terragrunt -- stack run plan terraform/live/hometheo"
-          echo "  task terragrunt -- stack run apply terraform/live/hometheo"
-          exit 1
-        fi
+  plan:
+    desc: terragrunt run stack plan
+    dir: terraform/live/hometheo
+    cmd: terragrunt stack run plan {{.CLI_ARGS}}
 
-        cd "$DIR" && terragrunt $CMD
+  apply:
+    desc: terragrunt run stack apply
+    dir: terraform/live/hometheo
+    cmd: terragrunt stack run apply {{.CLI_ARGS}}
 
   bootstrap:
     desc: Bootstrap S3 backend for Terraform state

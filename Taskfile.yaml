@@ -1,37 +1,11 @@
 version: '3'
 
 includes:
-  terragrunt : ./tasks/terragrunt/Taskfile.yaml
+  terragrunt: ./tasks/terragrunt/Taskfile.yaml
   argocd: ./tasks/argocd/Taskfile.yaml
 
 tasks:
   default:
     desc: Show available tasks
     silent: true
-    cmds:
-      - |
-        echo ""
-        echo "  Homelab Infrastructure"
-        echo "  ======================"
-        echo ""
-        echo "  Quick Start:"
-        echo "    1. cp .env.example .env     # Configure credentials"
-        echo "    2. task argocd:generate-secrets"
-        echo "    3. task terragrunt -- stack run apply terraform/live/hometheo"
-        echo "    4. task argocd:bootstrap"
-        echo ""
-        echo "  Secrets:"
-        echo "    argocd:generate-secrets   Generate and encrypt secrets"
-        echo ""
-        echo "  ArgoCD:"
-        echo "    argocd:bootstrap          Deploy ArgoCD + applications"
-        echo "    argocd:password           Get ArgoCD admin password"
-        echo "    argocd:post-bootstrap     Show all service credentials"
-        echo "    argocd:keycloak-admin     Get Keycloak admin credentials"
-        echo "    argocd:grafana-admin      Get Grafana admin credentials"
-        echo ""
-        echo "  Terragrunt:"
-        echo "   terragrunt -- <cmd> <path>        Run terragrunt command in path"
-        echo "   terragrunt :bootstrap              Initialize S3 backend"
-        echo "   terragrunt :clean                  Clear cache"
-        echo ""
+    cmd: task --list-all
