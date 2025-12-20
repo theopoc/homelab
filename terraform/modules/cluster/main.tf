@@ -17,12 +17,6 @@ locals {
   )
 }
 
-# Fetch Gateway API CRDs manifest
-data "http" "gateway_api_crds" {
-  count = var.gateway_api_enabled ? 1 : 0
-  url   = local.gateway_api_manifest_url
-}
-
 module "kubernetes" {
   source = "git::https://github.com/sofianedjerbi/terraform-hcloud-kubernetes.git?ref=feat/external-firewall-support"
 

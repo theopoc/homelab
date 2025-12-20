@@ -2,36 +2,6 @@
 # Manages admin IPs for cluster API access independently
 # This avoids chicken-and-egg problems with API health checks
 
-terraform {
-  required_version = ">= 1.0"
-
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = ">= 1.45.0"
-    }
-    external = {
-      source  = "hashicorp/external"
-      version = ">= 2.0.0"
-    }
-  }
-}
-
-provider "hcloud" {
-  token = var.hcloud_token
-}
-
-# Get current public IPs (handles missing IPv6 gracefully)
-data "external" "current_ips" {
-  count   = var.use_current_ip ? 1 : 0
-  program = ["bash", "-c", <<-EOT
-    ipv4=$(curl -4sf --connect-timeout 5 https://ip.hetzner.com 2>/dev/null | tr -d '\n' || echo "")
-    ipv6=$(curl -6sf --connect-timeout 5 https://ip.hetzner.com 2>/dev/null | tr -d '\n' || echo "")
-    printf '{"ipv4": "%s", "ipv6": "%s"}' "$ipv4" "$ipv6"
-  EOT
-  ]
-}
-
 locals {
   # Build source IPs list from current IP + extra admin IPs
   current_ipv4 = var.use_current_ip && length(data.external.current_ips) > 0 && data.external.current_ips[0].result.ipv4 != "" ? ["${data.external.current_ips[0].result.ipv4}/32"] : []

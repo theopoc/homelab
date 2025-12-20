@@ -1,17 +1,6 @@
 # DNS Module
 # Sets up Route53 DNS record pointing to origin IP
 
-terraform {
-  required_version = ">= 1.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
 locals {
   # Extract root domain (e.g., sub.etcd.me -> etcd.me)
   domain_parts = split(".", var.domain)
