@@ -24,6 +24,9 @@ sops = "3.11.0"
 age = "1.2.1"
 kustomize = "5.8.0"
 terragrunt = "0.93.0"
+pre-commit = "4.5.1"
+tflint = "0.60.0"
+trivy = "0.68.2"
 
 # Note: opentofu and stu versions not found in devbox.lock
 # opentofu = "latest"

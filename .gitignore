@@ -10,7 +10,7 @@
 # Talos configurations are SOPS encrypted and safe to commit
 # Only ignore decrypted temp files
 talos/*.dec.yaml
-
+**/logs/
 # Terraform (all secrets stored in remote S3 backend)
 **/.terraform/
 **/.terraform.lock.hcl
@@ -34,3 +34,4 @@ Thumbs.db
 *.swo
 *~
 backup.json
+.claude/

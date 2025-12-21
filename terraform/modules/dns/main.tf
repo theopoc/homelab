@@ -7,14 +7,14 @@ locals {
   root_domain  = join(".", slice(local.domain_parts, length(local.domain_parts) - 2, length(local.domain_parts)))
 
   tags = merge(var.tags, {
-    ManagedBy = "terraform"
-    Module    = "dns"
+    module = "dns"
   })
 }
 
 
 resource "aws_route53_zone" "this" {
   name = "${local.root_domain}."
+  tags = local.tags
 }
 
 

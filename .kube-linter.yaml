@@ -1,2 +1,8 @@
-checks:
-  exclude: []
+ignorePaths:
+  - ".git/"
+  - ".github/"
+  - "vendor/"
+  - "node_modules/"
+  - "*.md"
+  - "terraform/"
+  - "tasks/"

@@ -6,7 +6,9 @@ locals {
   domain       = "hometheo.click"
 
   labels = {
-    managed_by = "terraform"
+    managed_by  = "terraform"
+    environment = "production"
+    cluster     = local.cluster_name
   }
 }
 
@@ -51,11 +53,11 @@ unit "cluster" {
     # Gateway API support (installs CRDs + enables Cilium Gateway controller)
     gateway_api_enabled      = true
     gateway_api_version      = "v1.4.1"
-    gateway_api_experimental = true  # Includes TLSRoute
+    gateway_api_experimental = true # Includes TLSRoute
 
     # Set false to allow cluster destruction
-    cluster_delete_protection  = false
-    cluster_graceful_destroy   = false
+    cluster_delete_protection = false
+    cluster_graceful_destroy  = false
   }
 }
 
@@ -65,7 +67,7 @@ unit "dns" {
   path   = "dns"
 
   values = {
-    domain                = local.domain
+    domain = local.domain
     #additional_subdomains = ["argo", "kube", "loki", "n8n", "auth", "uptime", "playwright.mcp"]
     additional_subdomains = ["kube"]
 
@@ -76,9 +78,6 @@ unit "dns" {
     # Subdomains point here for ingress traffic
     gateway_ip = "91.98.5.86"
 
-    tags = {
-      Environment = "production"
-      Cluster     = local.cluster_name
-    }
+    tags = local.labels
   }
 }

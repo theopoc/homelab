@@ -15,7 +15,7 @@ remote_state {
     encrypt = true
 
     # S3 native state locking (Terraform 1.10+, no DynamoDB needed!)
-    use_lockfile = true
+    use_lockfile            = true
     skip_metadata_api_check = true
   }
 }
@@ -42,5 +42,5 @@ inputs = {
   cilium_version     = get_env("CILIUM_VERSION")
 
   # Security
-  firewall_use_current_ip = true  # Automatically allow your current IP
+  firewall_use_current_ip = true # Automatically allow your current IP
 }
