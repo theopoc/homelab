@@ -20,6 +20,8 @@ tasks:
         done
       - echo "Applying secrets..."
       - sops -d argocd/overlays/{{.OVERLAY}}/secrets.sops.yaml | kubectl apply -f -
+      - echo "Install helm-diff plugin"
+      - helm plugin install https://github.com/databus23/helm-diff
       - echo "Installing ArgoCD via Helmfile..."
       - helmfile -f argocd/helmfile.yaml apply
       - echo "Applying root application..."
