@@ -18,8 +18,8 @@ configMapGenerator:
   - name: cluster-config
     namespace: default
     literals:
-      - domain=etcd.me
-      - repo-url=https://github.com/sofianedjerbi/homelab
+      - domain=hometheo.click
+      - repo-url=https://github.com/TheoPoc/homelab
       - overlay-path=argocd/overlays/hometheo
       - gateway-path=argocd/overlays/hometheo/resources/gateway
       - routes-path=argocd/overlays/hometheo/resources/routes
@@ -116,11 +116,6 @@ patches:
 
 # Files that are too complex to patch - override entirely
   - path: realm-import.yaml
-  - path: loki-stack-app.yaml
   - path: argocd-app.yaml
   - path: cluster-issuer.yaml
-  - path: n8n-app.yaml
-  - path: n8n-oauth2-proxy-app.yaml
-  - path: n8n-route.yaml
-  - path: uptime-kuma-route.yaml
   - path: landing-app.yaml
