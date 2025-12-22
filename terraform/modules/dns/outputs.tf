@@ -12,5 +12,5 @@ output "fqdn" {
 
 output "zone_id" {
   description = "Route53 zone ID"
-  value       = aws_route53_zone.this.zone_id
+  value       = data.aws_route53_zone.this.id
 }

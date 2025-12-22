@@ -49,7 +49,7 @@ age-keygen --output agekey.txt
 Copy [.env.example](.env.example) into .env and fill it
 
 ```bash
-task argocd:bootstrap
+task terragrunt:bootstrap
 task terragrunt -- stack run apply terraform/live/hometheo
 ```
 

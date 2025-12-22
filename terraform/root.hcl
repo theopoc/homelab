@@ -14,7 +14,7 @@ remote_state {
     region  = get_env("AWS_REGION", "us-east-1")
     encrypt = true
 
-    # S3 native state locking (Terraform 1.10+, no DynamoDB needed!)
+    # Note: State locking requires DynamoDB table configuration
     use_lockfile            = true
     skip_metadata_api_check = true
   }
@@ -36,7 +36,7 @@ inputs = {
   # Hetzner Cloud
   hcloud_token = get_env("HCLOUD_TOKEN")
 
-  # Versions (from devbox.json - DRY!)
+  # Versions (from mise.toml - DRY!)
   talos_version      = get_env("TALOS_VERSION")
   kubernetes_version = get_env("KUBERNETES_VERSION")
   cilium_version     = get_env("CILIUM_VERSION")
