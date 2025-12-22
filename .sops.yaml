@@ -1,7 +1,7 @@
 creation_rules:
   # Talos configuration files (local dev use only)
   - path_regex: talos/.*
-    age: age1m58w3a52776phxqzeyztezx09u4z7964ug0skf2rvzrzw63v2dhq602hcx
+    age: age1e03zgm5ewe4rckxnw6rqe90gpj6jk5e9l2sct6e4msk5w0xhx9vqhrsass
   # ArgoCD secrets
   - path_regex: argocd/.*secret.*\.yaml$
-    age: age1m58w3a52776phxqzeyztezx09u4z7964ug0skf2rvzrzw63v2dhq602hcx
+    age: age1e03zgm5ewe4rckxnw6rqe90gpj6jk5e9l2sct6e4msk5w0xhx9vqhrsass
