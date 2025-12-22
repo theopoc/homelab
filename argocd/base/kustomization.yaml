@@ -1,15 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Generate ConfigMap from external JS file for better maintainability
-configMapGenerator:
-  - name: n8n-hooks
-    namespace: n8n
-    files:
-      - hooks.js=resources/n8n/hooks.js
-    options:
-      disableNameSuffixHash: true
-
 resources:
   # Projects (for multi-tenancy)
   - projects/landing-project.yaml

@@ -4,9 +4,6 @@ kind: Kustomization
 # Inherit from base
 resources:
   - ../../base
-  - n8n-client-setup.yaml
-  - playwright-mcp-route.yaml
-  - n8n-mcp-route.yaml
 
 # KSOPS generator for SOPS-encrypted secrets
 # ArgoCD decrypts via KSOPS plugin, kubectl skips this
@@ -49,16 +46,6 @@ replacements:
       - select:
           kind: Application
           name: argocd-routes
-        fieldPaths:
-          - spec.source.repoURL
-      - select:
-          kind: Application
-          name: playwright-mcp
-        fieldPaths:
-          - spec.source.repoURL
-      - select:
-          kind: Application
-          name: n8n-mcp
         fieldPaths:
           - spec.source.repoURL
   - source:
