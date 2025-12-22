@@ -7,4 +7,3 @@ resources:
   - certificate.yaml
   - mcp-certificate.yaml
   - http-redirect.yaml
-  - routes/
