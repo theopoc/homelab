@@ -53,6 +53,12 @@ task terragrunt:bootstrap
 task terragrunt -- stack run apply terraform/live/hometheo
 ```
 
+## Prepare configuration for composants inside K8S
+```bash
+task argocd:generate-secrets
+task argocd:bootstrap:
+```
+
 ## Services
 
 Postgres, Keycloak, Grafana, Loki, Uptime Kuma, n8n, and more.

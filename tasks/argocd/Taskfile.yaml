@@ -2,7 +2,7 @@ version: '3'
 
 vars:
   OVERLAY: hometheo
-  REPO_URL: https://github.com/sofianedjerbi/homelab
+  REPO_URL: https://github.com/TheoPoc/homelab
 
 tasks:
   generate-secrets:
