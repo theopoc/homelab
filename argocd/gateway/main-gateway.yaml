@@ -50,24 +50,3 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    # MCP subdomain HTTP (for *.mcp.hometheo.click)
-    - name: http-mcp
-      protocol: HTTP
-      port: 80
-      hostname: "*.mcp.hometheo.click"
-      allowedRoutes:
-        namespaces:
-          from: All
-    # MCP subdomain HTTPS
-    - name: https-mcp
-      protocol: HTTPS
-      port: 443
-      hostname: "*.mcp.hometheo.click"
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: mcp-wildcard-tls
-            kind: Secret
-      allowedRoutes:
-        namespaces:
-          from: All
