@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    chart: n8n/n8n
+    chart: n8n
     repoURL: https://community-charts.github.io/helm-charts
     targetRevision: 1.16.13
     helm:
