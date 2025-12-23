@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n
+  namespace: argocd
+spec:
+  project: n8n
+  source:
+    chart: n8n/n8n
+    repoURL: https://community-charts.github.io/helm-charts
+    targetRevision: 1.16.13
+    helm:
+      releaseName: n8n
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: n8n
