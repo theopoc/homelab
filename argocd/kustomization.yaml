@@ -6,6 +6,7 @@ resources:
   - argocd-app.yaml
   - infrastructure/
   - gateway/
+  - n8n.yaml
 
 generators:
   - ksops-generator.yaml
