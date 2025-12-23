@@ -87,7 +87,7 @@ resource "aws_route53_record" "this" {
   zone_id = data.aws_route53_zone.this.id
   name    = var.domain
   type    = "A"
-  ttl     = 60
+  ttl     = 300
   records = [coalesce(var.gateway_ip, var.origin_ip)]
 }
 
@@ -99,6 +99,6 @@ resource "aws_route53_record" "subdomains" {
   zone_id = data.aws_route53_zone.this.id
   name    = "${each.value}.${var.domain}"
   type    = "A"
-  ttl     = 60
+  ttl     = 300
   records = [coalesce(var.gateway_ip, var.origin_ip)]
 }
