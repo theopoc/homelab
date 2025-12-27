@@ -11,6 +11,25 @@ spec:
     targetRevision: 1.16.13
     helm:
       releaseName: n8n
+      valuesObject:
+        image:
+          repository: n8nio/n8n
+          tag: "1.0.0"
+        service:
+          enabled: true
+          type: ClusterIP
+          port: 5678
+          name: n8n-server
+        main:
+          persistence:
+            enabled: true
+            volumeName: "n8n-main-data"
+            mountPath: "/home/node/.n8n"
+            size: 8Gi
+            accessMode: ReadWriteOnce
+            storageClass: "longhorn"
+            annotations:
+              helm.sh/resource-policy: keep
   destination:
     server: "https://kubernetes.default.svc"
     namespace: n8n
