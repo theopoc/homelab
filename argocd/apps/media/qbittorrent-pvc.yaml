@@ -20,7 +20,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
-  volumeName: qbitt-download
   resources:
     requests:
       storage: 10Gi
