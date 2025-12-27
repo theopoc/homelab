@@ -14,7 +14,6 @@ spec:
       - dns01:
           route53:
             region: eu-west-3
-            hostedZoneID: Z04124348QMZ6S1CR2RZ
             accessKeyIDSecretRef:
               name: route53-credentials
               key: access-key-id
