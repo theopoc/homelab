@@ -22,7 +22,7 @@ spec:
           name: n8n-server
         main:
           persistence:
-            enabled: true
+            enabled: false
             volumeName: "n8n-main-data"
             mountPath: "/home/node/.n8n"
             size: 8Gi
