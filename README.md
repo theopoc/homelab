@@ -42,7 +42,8 @@ mise install
 
 ### Generate sops age key
 ```bash
-age-keygen --output agekey.txt
+mkdir -p ~/.config/sops/age/
+age-keygen --output ~/.config/sops/age/keys.txt
 ```
 
 ### Fill information on .env
