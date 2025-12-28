@@ -20,7 +20,7 @@ spec:
 
         # Service configuration
         service:
-          type: ClusterIP
+          type: NodePort
           port: 32400
 
         # PMS configuration
