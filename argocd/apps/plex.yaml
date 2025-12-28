@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: plex-media-server
+    repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
+    targetRevision: 1.4.0
+    helm:
+      releaseName: plex
+      valuesObject:
+        image:
+          registry: index.docker.io
+          repository: plexinc/pms-docker
+          tag: "1.42.2.10156-f737b826c"
+          pullPolicy: IfNotPresent
+
+        # Service configuration
+        service:
+          type: ClusterIP
+          port: 32400
+
+        # PMS configuration
+        pms:
+          # Use existing PVC for config
+          configExistingClaim: "plex-config"
+          # Storage settings (ignored when using existing claim)
+          storageClassName: "longhorn"
+          configStorage: 5Gi
+
+        # Environment variables for PUID/PGID matching qbittorrent
+        extraEnv:
+          PLEX_UID: "1057"
+          PLEX_GID: "1056"
+          TZ: "Europe/Paris"
+          HOSTNAME: "PlexServer"
+
+        # Mount the shared downloads volume
+        extraVolumeMounts:
+          - name: media
+            mountPath: /data
+            readOnly: false
+
+        extraVolumes:
+          - name: media
+            persistentVolumeClaim:
+              claimName: qbitt-download
+
+        # HTTPRoute configuration
+        httpRoute:
+          enabled: true
+          parentRefs:
+            - name: main-gateway
+              namespace: default
+              sectionName: https
+          hostnames:
+            - plex.hometheo.click
+          annotations:
+            argocd.argoproj.io/sync-wave: "2"
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: media
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
