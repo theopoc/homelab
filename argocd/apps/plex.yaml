@@ -12,7 +12,7 @@ spec:
     helm:
       releaseName: plex
       valuesObject:
-        hostNetwork: false
+        hostNetwork: true
         image:
           registry: index.docker.io
           repository: plexinc/pms-docker
@@ -43,7 +43,7 @@ spec:
           PLEX_GID: "1056"
           TZ: "Europe/Paris"
           HOSTNAME: "PlexServer"
-          ADVERTISE_IP: "https://167.233.14.187:32400"
+          ADVERTISE_IP: "http://167.233.14.187:32400"
 
         # Mount the shared downloads volume
         extraVolumeMounts:
