@@ -61,8 +61,6 @@ spec:
             - name: main-gateway
               namespace: default
               sectionName: plex-https
-          hostnames:
-            - plex.hometheo.click
           annotations:
             argocd.argoproj.io/sync-wave: "2"
 
