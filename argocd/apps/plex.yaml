@@ -60,7 +60,7 @@ spec:
           parentRefs:
             - name: main-gateway
               namespace: default
-              sectionName: https
+              sectionName: plex-https
           hostnames:
             - plex.hometheo.click
           annotations:
