@@ -23,7 +23,6 @@ spec:
           type: ClusterIP
           port: 32400
 
-          loadBalancerIP: "167.233.14.187"
         # PMS configuration
         pms:
           # Use existing PVC for config

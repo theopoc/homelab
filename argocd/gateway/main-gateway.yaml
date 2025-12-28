@@ -54,7 +54,7 @@ spec:
     - name: plex-https
       protocol: HTTPS
       port: 32400
-      hostname: plex.hometheo.click
+      hostname: "*.plex.direct"
       tls:
         mode: Terminate
         certificateRefs:
