@@ -54,7 +54,6 @@ spec:
     - name: plex-https
       protocol: HTTPS
       port: 32400
-      hostname: "*"
       tls:
         mode: Terminate
         certificateRefs:
