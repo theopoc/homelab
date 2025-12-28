@@ -68,7 +68,7 @@ unit "dns" {
 
   values = {
     domain                = local.domain
-    additional_subdomains = ["kube", "argo"]
+    additional_subdomains = ["kube", "argo", "plex"]
 
     # Get control plane IP from cluster output (for kube subdomain)
     cluster_path = "../cluster"
