@@ -12,7 +12,6 @@ spec:
     helm:
       releaseName: plex
       valuesObject:
-        hostNetwork: true
         image:
           registry: index.docker.io
           repository: plexinc/pms-docker
