@@ -31,6 +31,10 @@ spec:
           storageClassName: "longhorn"
           configStorage: 5Gi
 
+          claimSecret:
+            name: "plex-claim"
+            key: "plexserver.claimcode"
+
         # Environment variables for PUID/PGID matching qbittorrent
         extraEnv:
           PLEX_UID: "1057"
