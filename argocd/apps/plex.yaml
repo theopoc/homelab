@@ -61,6 +61,12 @@ spec:
             - name: main-gateway
               namespace: default
               sectionName: plex-https
+            - name: main-gateway
+              namespace: default
+              sectionName: plex-all-https
+            - name: main-gateway
+              namespace: default
+              sectionName: plex-http
           annotations:
             argocd.argoproj.io/sync-wave: "2"
 

@@ -63,3 +63,20 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: plex-all-https
+      protocol: HTTPS
+      port: 32400
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: wildcard-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: plex-http
+      protocol: HTTP
+      port: 32400
+      allowedRoutes:
+        namespaces:
+          from: All
