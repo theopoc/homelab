@@ -41,7 +41,7 @@ spec:
           PLEX_GID: "1056"
           TZ: "Europe/Paris"
           HOSTNAME: "PlexServer"
-          ADVERTISE_IP: "https://plex.hometheo.click:32400"
+          ADVERTISE_IP: "https://167.233.14.187:32400"
 
         # Mount the shared downloads volume
         extraVolumeMounts:
