@@ -25,7 +25,7 @@ spec:
         - name: config
           mountPath: /config
         - name: downloads
-          mountPath: /downloads
+          mountPath: /data
         ports:
         - containerPort: 8989
       volumes:

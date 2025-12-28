@@ -30,7 +30,7 @@ spec:
             - name: config
               mountPath: /config
             - name: downloads
-              mountPath: /downloads
+              mountPath: /data/torrents
           ports:
             - containerPort: 8080
 
