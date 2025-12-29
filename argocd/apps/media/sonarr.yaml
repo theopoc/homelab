@@ -16,6 +16,11 @@ spec:
           config: null
         deployment:
           container:
+            image:
+              repository: "ghcr.io/linuxserver/sonarr"
+              tag: "4.0.16"
+              pullPolicy: IfNotPresent
+
             volumeMounts:
               - name: downloads
                 mountPath: '/data'
