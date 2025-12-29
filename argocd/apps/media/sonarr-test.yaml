@@ -7,10 +7,10 @@ spec:
   project: default
   source:
     chart: sonarr
-    repoURL: https://panzer1119.github.io/helm-charts
-    targetRevision: 0.1.8
+    repoURL: https://charts.pree.dev
+    targetRevision: 1.11.1
     helm:
-      releaseName: panzer1119
+      releaseName: pree
       valuesObject:
         image:
           tag: "4.0.16"
@@ -19,20 +19,14 @@ spec:
         env:
           TZ: "Europe/Paris"
 
-        persistence:
-          enabled: true
-          storageClass: "longhorn"
-          accessMode: ReadWriteOnce
-          size: 800Mi
+        metrics:
+          enabled: false
 
-        additionalVolumes:
-          - name: downloads
-            persistentVolumeClaim:
-              claimName: sonarr-test-download
-        # if you need any additional volume mounts, you can define them here
-        additionalMounts:
-          - mountPath: /data
-            name: downloads
+        persistence:
+          config:
+            enabled: true
+          mountPath:
+            enabled: /data
 
   destination:
     server: "https://kubernetes.default.svc"
