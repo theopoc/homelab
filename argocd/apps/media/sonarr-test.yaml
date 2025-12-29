@@ -29,12 +29,10 @@ spec:
             accessMode: ReadWriteOnce
             storageClassName: "longhorn"
             size: 1Gi
-          media:
+          downloads:
             enabled: true
             mountPath: /data
-            accessMode: ReadWriteOnce
-            storageClassName: "longhorn"
-            size: 10Gi
+            existingClaim: gabe565-qbittorrent-downloads
 
         probes:
           liveness:
