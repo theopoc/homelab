@@ -41,7 +41,6 @@ spec:
           PLEX_GID: "1056"
           TZ: "Europe/Paris"
           HOSTNAME: "PlexServer"
-          ADVERTISE_IP: "http://167.233.14.187:32400"
 
         # Mount the shared downloads volume
         extraVolumeMounts:
@@ -56,7 +55,7 @@ spec:
 
         # HTTPRoute configuration
         httpRoute:
-          enabled: true
+          enabled: false
           parentRefs:
             - name: main-gateway
               namespace: default
