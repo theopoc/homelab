@@ -14,7 +14,7 @@ spec:
       valuesObject:
         image:
           repository: ghcr.io/linuxserver/qbittorrent
-          tag: "5.14"
+          tag: "5.1.4"
           pullPolicy: IfNotPresent
 
         env:
