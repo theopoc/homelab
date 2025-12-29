@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qbittorrent-test
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: qbittorrent
+    repoURL: https://charts.gabe565.com
+    targetRevision: 0.4.1
+    helm:
+      releaseName: gabe565
+      valuesObject:
+        image:
+          repository: ghcr.io/linuxserver/qbittorrent
+          tag: "5.14"
+          pullPolicy: IfNotPresent
+
+        env:
+          TZ: "Europe/Paris"
+
+        ingress:
+          main:
+            enabled: false
+
+        persistence:
+          config:
+            enabled: true
+            storageClassName: "longhorn"
+            accessMode: ReadWriteOnce
+            size: 1Gi
+          downloads:
+            enabled: true
+            mountPath: /data
+            storageClassName: "longhorn"
+            accessMode: ReadWriteOnce
+            size: 10Gi
+          media:
+            enabled: false
+
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: media
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
