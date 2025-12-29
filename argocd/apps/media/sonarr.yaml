@@ -49,7 +49,6 @@ spec:
                 claimName: "gabe565-qbittorrent-downloads"
 
         persistentVolumeClaims:
-          sonarr-config: null
           sonarr-config:
             accessMode: 'ReadWriteOnce'
             requestStorage: '1Gi'
