@@ -13,6 +13,7 @@ spec:
       releaseName: pree
       valuesObject:
         image:
+          repository: linuxserver/sonarr
           tag: "4.0.16"
           pullPolicy: IfNotPresent
 
