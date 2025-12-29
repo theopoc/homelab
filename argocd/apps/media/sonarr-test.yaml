@@ -12,7 +12,7 @@ spec:
     helm:
       releaseName: toto
       valueFiles:
-        - sonarr-values.yaml
+        - ./values-sonarr.yaml
 
   destination:
     server: "https://kubernetes.default.svc"
