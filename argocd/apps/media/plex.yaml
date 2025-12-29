@@ -51,7 +51,7 @@ spec:
         extraVolumes:
           - name: media
             persistentVolumeClaim:
-              claimName: qbitt-download
+              claimName: media-qbittorrent-downloads
 
         # HTTPRoute configuration
         httpRoute:
