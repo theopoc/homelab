@@ -12,6 +12,7 @@ spec:
     helm:
       releaseName: media
       values: |
+        secrets: null
         application:
           config:
             contents: |
