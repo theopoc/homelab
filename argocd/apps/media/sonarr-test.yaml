@@ -21,11 +21,15 @@ spec:
                 mountPath: '/data'
 
           volumes:
+            config:
+              persistentVolumeClaim:
+                claimName: "sonarr-config-test"
             downloads:
               persistentVolumeClaim:
                 claimName: "gabe565-qbittorrent-downloads"
 
         persistentVolumeClaims:
+          sonarr-config: null
           sonarr-config-test:
             accessMode: 'ReadWriteOnce'
             requestStorage: '1Gi'
