@@ -21,9 +21,12 @@ spec:
               tag: "4.0.16"
               pullPolicy: IfNotPresent
             env:
-              PUID: "1000"
-              PGID: "1000"
-              TZ: "Europe/Paris"
+              - name: "PUID"
+                value: "1000"
+              - name: "PGID"
+                value: "1000"
+              - name: "TZ"
+                value: "Europe/Paris"
             volumeMounts:
               - name: downloads
                 mountPath: '/data'
