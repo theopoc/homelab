@@ -13,7 +13,27 @@ spec:
       releaseName: toto
       values: |
         application:
-          config: null
+          config:
+            contents: |
+              <Config>
+                <BindAddress>*</BindAddress>
+                <Port>8989</Port>
+                <SslPort>9898</SslPort>
+                <EnableSsl>False</EnableSsl>
+                <LaunchBrowser>True</LaunchBrowser>
+                <ApiKey>$apikey</ApiKey>
+                <AuthenticationMethod>Forms</AuthenticationMethod>
+                <AuthenticationRequired>Enabled</AuthenticationRequired>
+                <Branch>main</Branch>
+                <LogLevel>debug</LogLevel>
+                <SslCertPath></SslCertPath>
+                <SslCertPassword></SslCertPassword>
+                <UrlBase></UrlBase>
+                <InstanceName>Sonarr</InstanceName>
+                <UpdateMechanism>Docker</UpdateMechanism>
+                <AnalyticsEnabled>False</AnalyticsEnabled>
+                <Theme>dark</Theme>
+              </Config>
         deployment:
           container:
             volumeMounts:
