@@ -1,44 +1,53 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
   name: qbittorrent
-  namespace: media
+  namespace: argocd
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: qbittorrent
-  template:
-    metadata:
-      labels:
-        app: qbittorrent
-    spec:
-      containers:
-        - name: qbittorrent
-          image: linuxserver/qbittorrent:5.1.4
-          resources:
-            limits:
-              memory: "2Gi"
-            requests:
-              memory: "512Mi"
-          env:
-            - name: PUID
-              value: "1057"
-            - name: PGID
-              value: "1056"
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: downloads
-              mountPath: /data/torrents
-              subPath: torrents
-          ports:
-            - containerPort: 8080
+  project: default
+  source:
+    chart: qbittorrent
+    repoURL: https://charts.gabe565.com
+    targetRevision: 0.4.1
+    helm:
+      releaseName: media
+      valuesObject:
+        image:
+          repository: ghcr.io/linuxserver/qbittorrent
+          tag: "5.1.4"
+          pullPolicy: IfNotPresent
 
-      volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: qbitt-config
-        - name: downloads
-          persistentVolumeClaim:
-            claimName: qbitt-download
+        env:
+          TZ: "Europe/Paris"
+
+        ingress:
+          main:
+            enabled: false
+
+        persistence:
+          config:
+            enabled: true
+            storageClassName: "longhorn"
+            accessMode: ReadWriteOnce
+            size: 1Gi
+          downloads:
+            enabled: true
+            mountPath: /data
+            storageClassName: "longhorn"
+            accessMode: ReadWriteOnce
+            size: 10Gi
+          media:
+            enabled: false
+
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: media
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
