@@ -25,8 +25,8 @@ spec:
         persistence:
           config:
             enabled: true
-          mountPath:
-            enabled: /data
+          media:
+            mountPath: /data
 
   destination:
     server: "https://kubernetes.default.svc"
