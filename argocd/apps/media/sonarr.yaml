@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sonarr-test
+  name: sonarr
   namespace: argocd
 spec:
   project: default
@@ -10,7 +10,7 @@ spec:
     repoURL: https://media-servarr.shw.al/charts
     targetRevision: 0.9.0
     helm:
-      releaseName: toto
+      releaseName: media
       values: |
         application:
           config:
@@ -43,14 +43,14 @@ spec:
           volumes:
             config:
               persistentVolumeClaim:
-                claimName: "sonarr-config-test"
+                claimName: "sonarr-config"
             downloads:
               persistentVolumeClaim:
                 claimName: "gabe565-qbittorrent-downloads"
 
         persistentVolumeClaims:
           sonarr-config: null
-          sonarr-config-test:
+          sonarr-config:
             accessMode: 'ReadWriteOnce'
             requestStorage: '1Gi'
             selector: {}
