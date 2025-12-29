@@ -17,13 +17,13 @@ spec:
         deployment:
           container:
             volumeMounts:
-              - name: config
+              - name: config-test
                 mountPath: '/config'
               - name: downloads
                 mountPath: '/data'
 
           volumes:
-            config:
+            config-test:
               persistentVolumeClaim:
                 claimName: "sonarr-config-test"
             downloads:
