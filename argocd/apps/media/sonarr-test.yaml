@@ -26,6 +26,7 @@ spec:
           config:
             enabled: true
           media:
+            enabled: true
             mountPath: /data
 
   destination:
