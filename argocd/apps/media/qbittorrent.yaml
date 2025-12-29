@@ -19,7 +19,8 @@ spec:
 
         env:
           TZ: "Europe/Paris"
-
+          PUID: "1000"
+          PGID: "1000"
         ingress:
           main:
             enabled: false

@@ -20,7 +20,10 @@ spec:
               repository: "ghcr.io/linuxserver/sonarr"
               tag: "4.0.16"
               pullPolicy: IfNotPresent
-
+            env:
+              - PUID: "1000"
+              - PGID: "1000"
+              - TZ: "Europe/Paris"
             volumeMounts:
               - name: downloads
                 mountPath: '/data'
