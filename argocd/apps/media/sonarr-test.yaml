@@ -26,10 +26,14 @@ spec:
           config:
             enabled: true
             accessMode: ReadWriteOnce
+            storageClassName: "longhorn"
+            size: 1Gi
           media:
             enabled: true
             mountPath: /data
             accessMode: ReadWriteOnce
+            storageClassName: "longhorn"
+            size: 10Gi
 
   destination:
     server: "https://kubernetes.default.svc"
