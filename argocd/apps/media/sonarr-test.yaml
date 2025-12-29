@@ -17,23 +17,13 @@ spec:
         deployment:
           container:
             volumeMounts:
-              - name: config-test
-                mountPath: '/config'
               - name: downloads
                 mountPath: '/data'
 
           volumes:
-            config-test:
-              persistentVolumeClaim:
-                claimName: "toto"
             downloads:
               persistentVolumeClaim:
                 claimName: "gabe565-qbittorrent-downloads"
-
-        persistentVolumeClaim:
-          toto:
-            accessMode: ReadWriteOnce
-            requestStorage: 1Gi
 
         metrics:
           enabled: false
