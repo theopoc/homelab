@@ -24,10 +24,12 @@ spec:
 
         persistence:
           config:
-            enabled: false
+            enabled: true
+            accessMode: ReadWriteOnce
           media:
             enabled: true
             mountPath: /data
+            accessMode: ReadWriteOnce
 
   destination:
     server: "https://kubernetes.default.svc"
