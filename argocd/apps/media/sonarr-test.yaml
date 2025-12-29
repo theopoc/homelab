@@ -35,6 +35,10 @@ spec:
             storageClassName: "longhorn"
             size: 10Gi
 
+        probes:
+          liveness:
+            enabled: false
+
   destination:
     server: "https://kubernetes.default.svc"
     namespace: media
