@@ -25,13 +25,13 @@ spec:
           volumes:
             config-test:
               persistentVolumeClaim:
-                claimName: "sonarr-config-test"
+                claimName: "toto"
             downloads:
               persistentVolumeClaim:
                 claimName: "gabe565-qbittorrent-downloads"
 
         persistentVolumeClaim:
-          sonarr-config-test:
+          toto:
             accessMode: ReadWriteOnce
             requestStorage: 1Gi
 
