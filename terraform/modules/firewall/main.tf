@@ -42,6 +42,14 @@ resource "hcloud_firewall" "this" {
     source_ips  = local.source_ips
   }
 
+  rule {
+    description = "Allow Incoming Requests to Plex"
+    direction   = "in"
+    protocol    = "tcp"
+    port        = "32400"
+    source_ips  = ["0.0.0.0/0"]
+  }
+
   lifecycle {
     # Ignore apply_to - managed by cluster module's server resources
     ignore_changes = [apply_to]
