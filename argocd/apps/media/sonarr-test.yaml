@@ -25,6 +25,12 @@ spec:
               persistentVolumeClaim:
                 claimName: "gabe565-qbittorrent-downloads"
 
+        persistentVolumeClaims:
+          sonarr-config-test:
+            accessMode: 'ReadWriteOnce'
+            requestStorage: '1Gi'
+            selector: {}
+
         metrics:
           enabled: false
         ingress:
