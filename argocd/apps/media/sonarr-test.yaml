@@ -24,7 +24,7 @@ spec:
 
         persistence:
           config:
-            enabled: true
+            enabled: false
           media:
             enabled: true
             mountPath: /data
