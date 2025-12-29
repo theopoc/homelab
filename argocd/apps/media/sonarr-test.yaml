@@ -10,7 +10,7 @@ spec:
     repoURL: https://media-servarr.shw.al/charts
     targetRevision: 0.9.0
     helm:
-      releaseName: mediar-servarr
+      releaseName: sonarr
       valuesObject:
         application:
           config: null
@@ -25,7 +25,11 @@ spec:
               persistentVolumeClaim:
                 claimName: "gabe565-qbittorrent-downloads"
 
-        persistentVolumeClaims: {}
+        persistentVolumeClaims:
+          sonarr-config-test:
+            accessMode: 'ReadWriteOnce'
+            requestStorage: '1Gi'
+            selector: {}
 
         metrics:
           enabled: false
