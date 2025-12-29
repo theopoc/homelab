@@ -10,7 +10,7 @@ spec:
     repoURL: https://media-servarr.shw.al/charts
     targetRevision: 0.9.0
     helm:
-      releaseName: sonarr
+      releaseName: toto
       valuesObject:
         application:
           config: null
