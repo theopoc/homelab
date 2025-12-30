@@ -13,6 +13,8 @@ spec:
       valuesObject:
         alertmanager:
           enabled: false
+        nodeExporter:
+          enabled: false
 
   destination:
     server: https://kubernetes.default.svc
