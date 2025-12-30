@@ -7,14 +7,24 @@ tasks:
     cmd: terragrunt stack generate {{.CLI_ARGS}}
 
   plan:
-    desc: terragrunt run stack plan
+    desc: terragrunt stack run plan
     dir: terraform/live/hometheo
     cmd: terragrunt stack run plan {{.CLI_ARGS}}
 
   apply:
-    desc: terragrunt run stack apply
+    desc: terragrunt stack run apply
     dir: terraform/live/hometheo
     cmd: terragrunt stack run apply {{.CLI_ARGS}}
+
+  clean:
+    desc: terragrunt stack clean and clear cache
+    dir: terraform/live/hometheo
+    cmds:
+      - terragrunt stack clean {{.CLI_ARGS}}
+      - echo "Cleaning terragrunt caches..."
+      - find terraform -type d -name ".terragrunt-cache" -exec rm -rf {} + 2>/dev/null || true
+      - find terraform -type d -name ".terragrunt-stack" -exec rm -rf {} + 2>/dev/null || true
+      - echo "✓ Caches cleared"
 
   bootstrap:
     desc: Bootstrap S3 backend for Terraform state
@@ -37,12 +47,3 @@ tasks:
         aws s3api put-public-access-block --bucket "${TF_STATE_BUCKET}" --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true" --no-cli-pager
 
         echo "✅ Bootstrap complete!"
-
-  clean:
-    desc: Clear terragrunt cache
-    cmds:
-      - |
-        echo "Cleaning terragrunt caches..."
-        find terraform -type d -name ".terragrunt-cache" -exec rm -rf {} + 2>/dev/null || true
-        find terraform -type d -name ".terragrunt-stack" -exec rm -rf {} + 2>/dev/null || true
-        echo "✓ Caches cleared"
