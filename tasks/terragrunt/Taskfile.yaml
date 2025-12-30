@@ -26,6 +26,20 @@ tasks:
       - find terraform -type d -name ".terragrunt-stack" -exec rm -rf {} + 2>/dev/null || true
       - echo "✓ Caches cleared"
 
+  plan:*:
+    desc: terragrunt plan on specific unit
+    dir: "terraform/live/hometheo/.terragrunt-stack/{{.UNIT}}/"
+    cmd: terragrunt plan {{.CLI_ARGS}}
+    vars:
+      UNIT: '{{index .MATCH 0}}'
+
+  apply:*:
+    desc: terragrunt apply on specific unit
+    dir: "terraform/live/hometheo/.terragrunt-stack/{{.UNIT}}/"
+    cmd: terragrunt apply {{.CLI_ARGS}}
+    vars:
+      UNIT: '{{index .MATCH 0}}'
+
   bootstrap:
     desc: Bootstrap S3 backend for Terraform state
     cmds:
