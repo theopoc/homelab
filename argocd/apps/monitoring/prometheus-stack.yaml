@@ -15,8 +15,10 @@ spec:
           enabled: false
         nodeExporter:
           enabled: false
-        crds:
-          enabled: false
+        grafana:
+          sidecar:
+            datasources:
+              skipReload: false
 
   destination:
     server: https://kubernetes.default.svc
