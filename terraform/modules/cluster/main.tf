@@ -71,4 +71,6 @@ module "kubernetes" {
 
   # Graceful destroy (set false to skip etcd leave)
   cluster_graceful_destroy = var.cluster_graceful_destroy
+
+  prometheus_operator_crds_enabled = false
 }
