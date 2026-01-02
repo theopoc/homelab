@@ -9,8 +9,17 @@ spec:
     chart: sftpgo
     repoURL: https://charts.sagikazarmark.dev
     targetRevision: 0.23.2
-    # helm:
-    #   valuesObject:
+    helm:
+      valuesObject:
+        ftpd.enabled: true
+        volumes:
+          - name: qbittorrent-downloads
+            persistentVolumeClaim:
+              claimName: media-qbittorrent-downloads
+        volumeMounts:
+          - name: media-qbittorrent-downloads
+            mountPath: /data
+
 
   destination:
     server: "https://kubernetes.default.svc"
