@@ -23,15 +23,15 @@ spec:
             resources:
               requests:
                 storage: 100Mi
-          ftpd:
-            enabled: true
-          volumes:
-            - name: qbittorrent-downloads
-              persistentVolumeClaim:
-                claimName: media-qbittorrent-downloads
-          volumeMounts:
-            - name: qbittorrent-downloads
-              mountPath: /data
+        volumes:
+          - name: qbittorrent-downloads
+            persistentVolumeClaim:
+              claimName: media-qbittorrent-downloads
+        volumeMounts:
+          - name: qbittorrent-downloads
+            mountPath: /data
+        ftpd:
+          enabled: true
 
 
   destination:
