@@ -11,9 +11,9 @@ spec:
     targetRevision: 0.23.2
     helm:
       valuesObject:
-      image:
-        repository: ghcr.io/drakkan/sftpgo
-        tag: v2.5.4
+        image:
+          repository: ghcr.io/drakkan/sftpgo
+          tag: v2.5.4
         persistence:
           enabled: true
           pvc:
@@ -23,15 +23,15 @@ spec:
             resources:
               requests:
                 storage: 100Mi
-        ftpd:
-          enabled: true
-        volumes:
-          - name: qbittorrent-downloads
-            persistentVolumeClaim:
-              claimName: media-qbittorrent-downloads
-        volumeMounts:
-          - name: qbittorrent-downloads
-            mountPath: /data
+          ftpd:
+            enabled: true
+          volumes:
+            - name: qbittorrent-downloads
+              persistentVolumeClaim:
+                claimName: media-qbittorrent-downloads
+          volumeMounts:
+            - name: qbittorrent-downloads
+              mountPath: /data
 
 
   destination:
