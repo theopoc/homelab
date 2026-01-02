@@ -10,8 +10,21 @@ spec:
     repoURL: https://charts.sagikazarmark.dev
     targetRevision: 0.23.2
     helm:
+      image:
+        repository: ghcr.io/drakkan/sftpgo
+        tag: 0.23.2
       valuesObject:
-        ftpd.enabled: true
+        persistence:
+          enabled: true
+          pvc:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: "longhorn"
+            resources:
+              requests:
+                storage: 100Mi
+        ftpd:
+          enabled: true
         volumes:
           - name: qbittorrent-downloads
             persistentVolumeClaim:
