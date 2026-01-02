@@ -17,7 +17,7 @@ spec:
             persistentVolumeClaim:
               claimName: media-qbittorrent-downloads
         volumeMounts:
-          - name: media-qbittorrent-downloads
+          - name: qbittorrent-downloads
             mountPath: /data
 
 
