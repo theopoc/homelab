@@ -10,10 +10,10 @@ spec:
     repoURL: https://charts.sagikazarmark.dev
     targetRevision: 0.23.2
     helm:
+      valuesObject:
       image:
         repository: ghcr.io/drakkan/sftpgo
-        tag: 0.23.2
-      valuesObject:
+        tag: v2.5.4
         persistence:
           enabled: true
           pvc:
