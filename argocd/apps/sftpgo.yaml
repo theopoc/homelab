@@ -23,7 +23,7 @@ spec:
 
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: sftpgo
+    namespace: media
   syncPolicy:
     automated:
       enabled: true
