@@ -48,7 +48,14 @@ unit "cluster" {
     ]
 
     # No separate workers - schedule on control planes
-    worker_nodepools = []
+    worker_nodepools = [
+      {
+        name     = "worker"
+        type     = "cx23"
+        location = "nbg1"
+        count    = 1
+      }
+    ]
 
     # Gateway API support (installs CRDs + enables Cilium Gateway controller)
     gateway_api_enabled      = true
