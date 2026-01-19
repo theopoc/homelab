@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: krr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/TheoPoc/homelab
+    targetRevision: HEAD
+    path: argocd/apps/krr
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: krr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

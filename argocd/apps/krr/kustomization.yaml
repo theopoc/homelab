@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: simple-krr-dashboard
+    repo: https://devops-ia.github.io/helm-simple-krr-dashboard
+    version: 1.3.0
+    releaseName: simple-krr-dashboard
+    namespace: krr
+
+patches:
+  - path: override-cluster-role.yaml
