@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-n8n
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: n8n
+    repoURL: https://community-charts.github.io/helm-charts
+    targetRevision: 1.16.13
+    helm:
+      releaseName: n8n
+      valuesObject:
+        image:
+          repository: n8nio/n8n
+          tag: "2.1.2"
+        main:
+          persistence:
+            enabled: false
+            volumeName: "n8n-main-data"
+            mountPath: "/home/node/.n8n"
+            size: 8Gi
+            accessMode: ReadWriteOnce
+            storageClass: "longhorn"
+            annotations:
+              helm.sh/resource-policy: keep
+    kustomize:
+      namePrefix: test-
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: n8n
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: n8n
+    repo: https://community-charts.github.io/helm-charts
+    version: 1.16.13
+    releaseName: n8n
+    namespace: n8n
+
+patches:
+  - target:
+      kind: Deployment
+      name: n8n
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: n8n-custom
