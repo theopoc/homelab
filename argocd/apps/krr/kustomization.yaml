@@ -8,5 +8,5 @@ helmCharts:
     releaseName: simple-krr-dashboard
     namespace: krr
 
-patches:
-  - path: override-cluster-role.yaml
+#  patches:
+#  - path: override-cluster-role.yaml
