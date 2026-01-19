@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    chart: krr-enforcer
-    repoURL: https://robusta-charts.storage.googleapis.com
-    targetRevision: 0.3.5
+    chart: simple-krr-dashboard
+    repoURL: https://devops-ia.github.io/helm-simple-krr-dashboard
+    targetRevision: 1.3.0
   destination:
     server: "https://kubernetes.default.svc"
     namespace: krr
