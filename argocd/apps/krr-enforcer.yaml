@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: krr-enforcer
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: robusta/krr-enforcer
+    repoURL: https://robusta-charts.storage.googleapis.com
+    targetRevision: 0.3.5
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: krr
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
