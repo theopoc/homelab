@@ -16,9 +16,7 @@ spec:
       valuesObject:
         persistence:
           data:
-            enabled: true
-            size: 10Mi
-            existingClaim: "media-qbittorrent-downloads"
+            enabled: false
 
   destination:
     server: https://kubernetes.default.svc
