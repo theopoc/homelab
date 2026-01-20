@@ -32,7 +32,6 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-              readOnly: true
             - mountPath: /srv
               name: data
             - mountPath: /database
