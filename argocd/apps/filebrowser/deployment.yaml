@@ -31,6 +31,8 @@ spec:
             requests:
               cpu: 250m
               memory: 512Mi
+          ports:
+            - containerPort: 8080
           volumeMounts:
             - mountPath: /config
               name: config
