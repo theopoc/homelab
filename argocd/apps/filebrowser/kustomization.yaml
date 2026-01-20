@@ -5,6 +5,7 @@ helmCharts:
   - name: Filebrowser
     repo: http://brandan-schmitz.github.io/helm-charts
     version: 1.2.0
+    releaseName: filebrowser
     namespace: media
 
 patches:
