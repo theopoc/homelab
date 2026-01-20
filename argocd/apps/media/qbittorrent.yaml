@@ -23,7 +23,7 @@ spec:
           PGID: "1000"
 
         nodeSelector:
-          kubernetes.io/hostname: hometheo-worker-1
+          kubernetes.io/hostname: hometheo-control-plane-1
 
         ingress:
           main:

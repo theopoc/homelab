@@ -15,7 +15,7 @@ spec:
     helm:
       valuesObject:
         nodeSelector:
-          kubernetes.io/hostname: hometheo-worker-1
+          kubernetes.io/hostname: hometheo-control-plane-1
 
         persistent:
           claimName: "media-qbittorrent-downloads"

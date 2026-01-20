@@ -36,7 +36,7 @@ spec:
             key: "plexserver.claimcode"
 
         nodeSelector:
-          kubernetes.io/hostname: hometheo-worker-1
+          kubernetes.io/hostname: hometheo-control-plane-1
 
         # Environment variables for PUID/PGID matching qbittorrent
         extraEnv:
