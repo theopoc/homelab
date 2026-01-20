@@ -16,6 +16,7 @@ spec:
       valuesObject:
         persistence:
           data:
+            enabled: false
             existingClaim: "media-qbittorrent-downloads"
 
   destination:
