@@ -16,9 +16,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/controller: main
-        app.kubernetes.io/instance: filebrowser
-        app.kubernetes.io/name: filebrowser
+        app: filebrowser
     spec:
       containers:
         - image: filebrowser/filebrowser:v2.42.5-s6
