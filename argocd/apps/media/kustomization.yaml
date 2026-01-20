@@ -9,10 +9,4 @@ helmCharts:
     namespace: media
 
 patches:
-  - target:
-      kind: Deployment
-      name: filebrowser
-    patch: |
-      - op: add
-        path: /spec/template/spec/nodeSelector/kubernetes.io\/hostname
-        value: hometheo-control-plane-1
+  - path: add-nodeselector.yaml
