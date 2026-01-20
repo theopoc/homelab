@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  settings.json: |
+    {
+      "port": "8080",
+      "baseURL": "",
+      "address": "",
+      "log": "stdout",
+      "database": "/database/filebrowser.db",
+      "root": "/srv"
+    }
+kind: ConfigMap
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: filebrowser:/ConfigMap:media/filebrowser
+  name: filebrowser
+  namespace: media
