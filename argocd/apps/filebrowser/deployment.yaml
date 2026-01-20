@@ -47,7 +47,7 @@ spec:
           name: config
         - name: data
           persistentVolumeClaim:
-            claimName: filebrowser-data
+            claimName: media-qbittorrent-download
         - name: database
           persistentVolumeClaim:
             claimName: filebrowser-database
