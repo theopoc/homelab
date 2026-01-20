@@ -8,9 +8,7 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app.kubernetes.io/controller: main
-      app.kubernetes.io/instance: filebrowser
-      app.kubernetes.io/name: filebrowser
+      app: filebrowser
   strategy:
     type: Recreate
   template:
