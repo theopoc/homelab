@@ -20,6 +20,9 @@ spec:
         - image: filebrowser/filebrowser:v2.42.5-s6
           imagePullPolicy: IfNotPresent
           name: main
+          securityContext:
+            runAsUser: 1000
+            fsGroup: 1000
           resources:
             limits:
               cpu: 500m

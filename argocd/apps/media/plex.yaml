@@ -40,8 +40,8 @@ spec:
 
         # Environment variables for PUID/PGID matching qbittorrent
         extraEnv:
-          PLEX_UID: "1057"
-          PLEX_GID: "1056"
+          PLEX_UID: "1000"
+          PLEX_GID: "1000"
           TZ: "Europe/Paris"
           HOSTNAME: "PlexServer"
 
