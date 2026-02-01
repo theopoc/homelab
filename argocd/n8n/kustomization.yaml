@@ -7,20 +7,18 @@ kind: Kustomization
 #     version: 1.16.13
 #     releaseName: n8n
 #     namespace: n8n
-commonLabels:
-  app: foo
-  environment: test
-
 
 resources:
   - n8n.yaml
   - deployment.yaml
 
-# patches:
-#   - target:
-#       kind: Deployment
-#       name: n8n
-#     patch: |
-#       - op: replace
-#         path: /spec/template/spec/containers/0/name
-#         value: n8n-custom
+patches:
+  - target:
+      kind: Deployment
+      name: n8n
+    patch: |
+      - op: add
+        path: /spec/template/spec/containers/0/resources
+        value:
+          limits:
+            cpu: "500m"
