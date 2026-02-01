@@ -27,7 +27,7 @@ spec:
         volume:
           enabled: true
           accessMode: ReadWriteOnce
-          size: 4Gi
+          size: 500Mi
         # Resources
         resources:
           requests:
