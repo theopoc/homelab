@@ -26,10 +26,10 @@ spec:
         # PMS configuration
         pms:
           # Use existing PVC for config
-          configExistingClaim: "plex-config"
+          configExistingClaim: "plex-config-0"
           # Storage settings (ignored when using existing claim)
           storageClassName: "longhorn"
-          configStorage: 5Gi
+          configStorage: 1Gi
 
           claimSecret:
             name: "plex-claim"
