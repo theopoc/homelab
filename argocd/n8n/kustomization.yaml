@@ -13,7 +13,7 @@ commonLabels:
 
 
 resources:
-  # - n8n.yaml
+  - n8n.yaml
   - deployment.yaml
 
 # patches:
