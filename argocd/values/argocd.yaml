@@ -19,6 +19,10 @@ configs:
             - "kustomize build --enable-alpha-plugins --enable-exec ."
         lockRepo: false
 
+  cm:
+    timeout:
+      reconciliation: "300s" # 5 minutes
+
 repoServer:
   volumes:
     - name: custom-tools
