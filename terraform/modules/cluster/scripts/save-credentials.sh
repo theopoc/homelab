@@ -7,6 +7,12 @@ set -euo pipefail
 SECRETS_DIR="${XDG_RUNTIME_DIR:-$HOME/.cache}/homelab-secrets"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
+if [[ -f "$REPO_ROOT/talos/talosconfig" && -f "$REPO_ROOT/talos/kubeconfig" ]]; then
+  echo "talosconfig and kubeconfig already exist; nothing to do."
+  exit 0
+fi
+
+
 mkdir -p "$SECRETS_DIR" && chmod 700 "$SECRETS_DIR"
 mkdir -p "$REPO_ROOT/talos"
 
