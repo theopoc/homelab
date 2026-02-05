@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-SECRETS_DIR="${XDG_RUNTIME_DIR:-$HOME/.cache/}homelab-secrets"
+SECRETS_DIR="${XDG_RUNTIME_DIR:-$HOME/.cache}/homelab-secrets"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 mkdir -p "$SECRETS_DIR" && chmod 700 "$SECRETS_DIR"
