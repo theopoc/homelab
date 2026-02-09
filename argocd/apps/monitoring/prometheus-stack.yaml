@@ -38,17 +38,17 @@ spec:
                 telegram_configs:
                   - bot_token_file: /etc/alertmanager/secrets/alertmanager-telegram/bot-token
                     chat_id: 5143700048
-                    parse_mode: 'MarkdownV2'
+                    parse_mode: 'HTML'
                     send_resolved: true
                     message: |
-                      {{ if eq .Status "firing" }}🔥{{ else }}✅{{ end }} *{{ .Status | toUpper }}*
+                      {{ if eq .Status "firing" }}🔥{{ else }}✅{{ end }} <b>{{ .Status | toUpper }}</b>
 
                       {{ range .Alerts }}
-                      *Alert:* {{ .Labels.alertname }}
-                      *Severity:* {{ .Labels.severity }}
-                      {{ if .Labels.namespace }}*Namespace:* {{ .Labels.namespace }}{{ end }}
-                      {{ if .Annotations.summary }}*Summary:* {{ .Annotations.summary }}{{ end }}
-                      {{ if .Annotations.description }}*Description:* {{ .Annotations.description }}{{ end }}
+                      <b>Alert:</b> {{ .Labels.alertname }}
+                      <b>Severity:</b> {{ .Labels.severity }}
+                      {{ if .Labels.namespace }}<b>Namespace:</b> {{ .Labels.namespace }}{{ end }}
+                      {{ if .Annotations.summary }}<b>Summary:</b> {{ .Annotations.summary }}{{ end }}
+                      {{ if .Annotations.description }}<b>Description:</b> {{ .Annotations.description }}{{ end }}
                       {{ end }}
           alertmanagerSpec:
             secrets:
