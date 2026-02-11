@@ -10,3 +10,4 @@ helmCharts:
 
 patches:
   - path: override-cluster-role.yaml
+  - path: service-annotate.yaml
