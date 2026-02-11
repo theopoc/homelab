@@ -82,3 +82,6 @@ repoServer:
           subPath: kustomize
         - name: sops-age-key
           mountPath: /sops-age-key
+
+notifications:
+  enabled: false
