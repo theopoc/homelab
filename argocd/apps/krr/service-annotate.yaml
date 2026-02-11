@@ -4,3 +4,4 @@ metadata:
   name: simple-krr-dashboard
   annotations:
     tailscale.com/expose: "true"
+    tailscale.com/tailnet-fqdn: "krr"
