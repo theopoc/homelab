@@ -55,6 +55,18 @@ unit "cluster" {
     gateway_api_version      = "v1.4.1"
     gateway_api_experimental = true # Includes TLSRoute
 
+    # Longhorn Helm custom values (expose UI via Tailscale)
+    longhorn_helm_values = {
+      service = {
+        ui = {
+          annotations = {
+            "tailscale.com/expose"       = "true"
+            "tailscale.com/hostname"     = "longhorn"
+          }
+        }
+      }
+    }
+
     # Set false to allow cluster destruction
     cluster_delete_protection = false
     cluster_graceful_destroy  = false

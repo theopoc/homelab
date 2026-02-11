@@ -46,6 +46,7 @@ module "kubernetes" {
   # Longhorn storage
   longhorn_enabled               = true
   longhorn_default_storage_class = true
+  longhorn_helm_values           = var.longhorn_helm_values
 
   # Disable NGINX ingress (using Cilium Gateway API instead)
   ingress_nginx_enabled = false

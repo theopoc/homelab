@@ -34,6 +34,7 @@ inputs = {
   worker_nodepools        = try(values.worker_nodepools, [])
 
   cilium_helm_values           = try(values.cilium_helm_values, {})
+  longhorn_helm_values         = try(values.longhorn_helm_values, {})
   control_plane_config_patches = try(values.control_plane_config_patches, [])
   worker_config_patches        = try(values.worker_config_patches, [])
 

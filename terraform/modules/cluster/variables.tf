@@ -90,6 +90,12 @@ variable "cluster_graceful_destroy" {
   default     = true
 }
 
+variable "longhorn_helm_values" {
+  description = "Custom Helm values for Longhorn"
+  type        = any
+  default     = {}
+}
+
 variable "firewall_id" {
   description = "External firewall ID (if set, cluster module won't create its own firewall)"
   type        = string
