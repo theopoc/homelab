@@ -50,4 +50,4 @@ patches:
   - target:
       kind: Deployment
       name: linkwarden
-    path: linkwarden-env.yaml
+    path: linkwarden-custom.yaml

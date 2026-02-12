@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkwarden
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.37
+        command:
+        - sh
+        - -c
+        - |
+          timeout=60
+          elapsed=0
+          while [ $elapsed -lt $timeout ]; do
+            nc -z postgresql 5432 && exit 0
+            echo "Waiting for PostgreSQL... (${elapsed}s/${timeout}s)"
+            sleep 2
+            elapsed=$((elapsed + 2))
+          done
+          echo "PostgreSQL not ready after ${timeout}s"
+          exit 1
+      containers:
+      - name: linkwarden
+        env:
+        - name: EMAIL_SERVER
+          valueFrom:
+            secretKeyRef:
+              key: email-server
+              name: linkwarden
