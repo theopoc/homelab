@@ -88,7 +88,8 @@ unit "dns" {
       "torrent",
       "grafana",
       "uptime",
-      "file"
+      "file",
+      "link"
     ]
 
     # Get control plane IP from cluster output (for kube subdomain)
