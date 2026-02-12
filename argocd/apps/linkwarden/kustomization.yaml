@@ -22,11 +22,11 @@ helmCharts:
             key: "nextjs-auth"
       extraEnv:
       - name: NEXT_PUBLIC_DISABLE_REGISTRATION
-        value: "false"
+        value: "true"
       - name: NEXT_PUBLIC_CREDENTIALS_ENABLED
-        value: "false"
+        value: "true"
       - name: DISABLE_NEW_SSO_USERS
-        value: "false"
+        value: "true"
       - name: NEXT_PUBLIC_EMAIL_PROVIDER
         value: "true"
       - name: EMAIL_FROM
