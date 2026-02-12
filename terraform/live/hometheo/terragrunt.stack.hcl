@@ -60,8 +60,8 @@ unit "cluster" {
       service = {
         ui = {
           annotations = {
-            "tailscale.com/expose"       = "true"
-            "tailscale.com/hostname"     = "longhorn"
+            "tailscale.com/expose"   = "true"
+            "tailscale.com/hostname" = "longhorn"
           }
         }
       }
