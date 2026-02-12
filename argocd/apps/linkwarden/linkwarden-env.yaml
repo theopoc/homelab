@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkwarden
+spec:
+  template:
+    spec:
+      containers:
+      - name: linkwarden
+        env:
+        - name: EMAIL_SERVER
+          valueFrom:
+            secretKeyRef:
+              key: email-server
+              name: linkwarden

@@ -1,0 +1,53 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: linkwarden
+    repo: https://charts.schoenwald.aero
+    version: 1.0.12
+    releaseName: linkwarden
+    namespace: linkwarden
+    valuesInline:
+      persistence:
+        enabled: false
+        size: 100Mi
+      env:
+        nextauth:
+          ## @param env.nextauth.url Defines the NEXTAUTH_URL and specifies the base URL for NextAuth.js authentication endpoints.
+          ## @param env.nextauth.secret Defines the NEXTAUTH_SECRET and is used by NextAuth.js to encrypt session tokens and JWTs. Can be generatet via `openssl rand -base64 32`
+          existingSecret:
+            ## @param env.nextauth.existingSecret.name Defines the NEXTAUTH_SECRET kubernetes secret name where to get the secret.
+            name: "linkwarden"
+            ## @param env.nextauth.existingSecret.key Defines the NEXTAUTH_SECRET kubernetes secret key where to get the secret.
+            key: "nextjs-auth"
+      extraEnv:
+      - name: NEXT_PUBLIC_DISABLE_REGISTRATION
+        value: "false"
+      - name: NEXT_PUBLIC_CREDENTIALS_ENABLED
+        value: "false"
+      - name: DISABLE_NEW_SSO_USERS
+        value: "false"
+      - name: NEXT_PUBLIC_EMAIL_PROVIDER
+        value: "true"
+      - name: EMAIL_FROM
+        value: "noreply@linkwarden"
+      externalPostgresql:
+        host: postgresql
+        existingSecret:
+          ## @param env.nextauth.existingSecret.name Defines the NEXTAUTH_SECRET kubernetes secret name where to get the secret.
+          name: "linkwarden"
+          ## @param env.nextauth.existingSecret.key Defines the NEXTAUTH_SECRET kubernetes secret key where to get the secret.
+          keys:
+            username: "postgres-user"
+            password: "postgres-passwd"
+
+resources:
+  - postgres-pvc.yaml
+  - postgres-service.yaml
+  - postgres-deployment.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: linkwarden
+    path: linkwarden-env.yaml
