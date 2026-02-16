@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ghcr.io/m0nsterrr/helm-charts
-    chart: homepage
-    targetRevision: 4.6.0
+    repoURL: https://github.com/TheoPoc/homelab
+    targetRevision: HEAD
+    path: argocd/apps/homepage
   destination:
     server: https://kubernetes.default.svc
     namespace: homepage
@@ -17,4 +17,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

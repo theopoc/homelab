@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: unknowniq/homepage
+    repo: https://unknowniq.github.io/helm-charts/
+    version: 1.8.2
+    releaseName: homepage
+    namespace: homepage
+    valuesInline:
+      persistence:
+        config:
+          enabled: true
+          accessMode: ReadWriteOnce
+          size: 50Mi
+          storageClass: "longhorn"
