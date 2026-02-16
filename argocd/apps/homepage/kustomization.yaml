@@ -50,7 +50,7 @@ helmCharts:
                   href: https://uptime.hometheo.click
                   description: Uptime Kuma
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/uptime-kuma.svg
-                  namespace: monitoring
+                  namespace: uptime-kuma
                   app: uptime-kuma
               - Prometheus:
                   href: https://prometheus.toto.com
