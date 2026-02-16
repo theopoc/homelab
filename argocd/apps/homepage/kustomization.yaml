@@ -10,10 +10,83 @@ helmCharts:
     valuesInline:
       persistence:
         config:
-          enabled: true
+          enabled: false
           accessMode: ReadWriteOnce
           size: 50Mi
           storageClass: "longhorn"
       config:
+        services:
+          - Media:
+              - Sonarr:
+                  href: https://sonarr.hometheo.click
+                  description: Sonarr
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sonarr.svg
+                  namespace: media
+                  app: sonarr
+                  widget:
+                    type: sonarr
+                    url: https://sonarr.hometheo.click
+              - Plex:
+                  href: https://plex.hometheo.click
+                  description: Plex Media Server
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/plex.svg
+                  namespace: media
+                  app: plex-media-server
+              - FileBrowser:
+                  href: https://file.hometheo.click
+                  description: Filebrowser
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/filebrowser.svg
+                  namespace: media
+                  app: filebrowser
+
+          - Monitoring:
+              - Grafana:
+                  href: https://grafana.hometheo.click
+                  description: Grafana
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/grafana.svg
+                  namespace: monitoring
+                  app: grafana
+              - UptimeKuma:
+                  href: https://uptime.hometheo.click
+                  description: Uptime Kuma
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/uptime-kuma.svg
+                  namespace: monitoring
+                  app: uptime-kuma
+              - Prometheus:
+                  href: https://prometheus.toto.com
+                  description: Prometheus
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
+                  namespace: monitoring
+                  app: prometheus
+
+          - Deployment:
+              - ArgoCD:
+                  href: https://argo.hometheo.click
+                  description: ArgoCD
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/argo-cd.svg
+
+          - Productivity:
+              - Linkwarden:
+                  href: https://link.hometheo.click
+                  description: Linkwarden
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/linkwarden.png
+                  namespace: linkwarden
+                  app: linkwarden
+
+          - Storage:
+              - Longhorn:
+                  href: https://example.com
+                  description: Longhorn
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/longhorn.svg
+
+        widgets:
+          - datetime:
+              format:
+                timeStyle: short
+                hourCycle: h23
         settings:
-          title: My Awesome HomeTheo
+          layout:
+            Media:
+              style: row
+              columns: 4
+              iconsOnly: true
