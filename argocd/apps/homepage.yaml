@@ -6,13 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ghcr.io/m0nsterrr/helm-charts/homepage
+    repoURL: ghcr.io/m0nsterrr/helm-charts
     chart: homepage
     targetRevision: 4.6.0
-    # helm:
-    #   valuesObject:
-
-
   destination:
     server: https://kubernetes.default.svc
     namespace: homepage
