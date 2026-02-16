@@ -50,13 +50,13 @@ helmCharts:
                   namespace: uptime-kuma
                   app: uptime-kuma
               - Prometheus:
-                  href: http://prometheus.tail622099.ts.net/
+                  href: http://prometheus.tail622099.ts.net:9090/
                   description: Prometheus
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
                   namespace: monitoring
                   app: prometheus
               - AlertManager:
-                  href: http://prometheus-alertmanager.tail622099.ts.net/
+                  href: http://prometheus-alertmanager.tail622099.ts.net:9093/
                   description: Prometheus Alert Manager
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
                   namespace: monitoring
@@ -70,6 +70,7 @@ helmCharts:
               - KRR:
                   href: http://krr.tail622099.ts.net/
                   description: Kubernetes Resource Recommendations
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kubernetes.svg
 
           - Productivity:
               - Linkwarden:
