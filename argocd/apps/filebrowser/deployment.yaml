@@ -8,13 +8,13 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: filebrowser
+      app.kubernetes.io/name: filebrowser
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: filebrowser
+        app.kubernetes.io/name: filebrowser
     spec:
       containers:
         - image: filebrowser/filebrowser:v2.42.5-s6
