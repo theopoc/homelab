@@ -93,3 +93,9 @@ helmCharts:
               style: row
               columns: 4
               iconsOnly: true
+
+patches:
+  - path: clusterrole-patch.yaml
+    target:
+      kind: ClusterRole
+      name: homepage
