@@ -50,17 +50,26 @@ helmCharts:
                   namespace: uptime-kuma
                   app: uptime-kuma
               - Prometheus:
-                  href: https://prometheus.toto.com
+                  href: http://prometheus.tail622099.ts.net/
                   description: Prometheus
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
                   namespace: monitoring
                   app: prometheus
+              - AlertManager:
+                  href: http://prometheus-alertmanager.tail622099.ts.net/
+                  description: Prometheus Alert Manager
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/prometheus.svg
+                  namespace: monitoring
+                  app: alertmanager
 
           - Deployment:
               - ArgoCD:
                   href: https://argo.hometheo.click
                   description: ArgoCD
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/argo-cd.svg
+              - KRR:
+                  href: http://krr.tail622099.ts.net/
+                  description: Kubernetes Resource Recommendations
 
           - Productivity:
               - Linkwarden:
@@ -72,7 +81,7 @@ helmCharts:
 
           - Storage:
               - Longhorn:
-                  href: https://example.com
+                  href: http://longhorn.tail622099.ts.net/
                   description: Longhorn
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/longhorn.svg
         kubernetes:

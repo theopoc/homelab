@@ -18,6 +18,10 @@ spec:
             kubeProxy: false
         alertmanager:
           enabled: true
+          service:
+            annotations:
+              tailscale.com/expose: "true"
+              tailscale.com/hostname: "prometheus-alertmanager"
           config:
             global:
               resolve_timeout: 5m
@@ -73,7 +77,11 @@ spec:
             size: 1Gi
             finalizers:
               - kubernetes.io/pvc-protection
-
+        prometheus:
+          service:
+            annotations:
+              tailscale.com/expose: "true"
+              tailscale.com/hostname: "prometheus"
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
