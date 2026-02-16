@@ -78,6 +78,9 @@ helmCharts:
                   href: https://example.com
                   description: Longhorn
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/longhorn.svg
+        kubernetes:
+          mode: cluster
+          gateway: true
 
         widgets:
           - datetime:

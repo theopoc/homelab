@@ -5,6 +5,16 @@ metadata:
   namespace: media
   annotations:
     argocd.argoproj.io/sync-wave: "2"
+    gethomepage.dev/href: "https://torrent.hometheo.click"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: Torrent
+    gethomepage.dev/group: Media
+    gethomepage.dev/icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/qbittorrent.svg"
+    gethomepage.dev/name: QbitTorrent
+    gethomepage.dev/widget.type: "qbittorrent"
+    gethomepage.dev/widget.url: "https://torrent.hometheo.click"
+    # gethomepage.dev/widget.headers.X-Auth-Key: "your-secret-here"
+    gethomepage.dev/pod-selector: ""
 spec:
   hostnames:
     - torrent.hometheo.click
