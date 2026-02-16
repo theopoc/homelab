@@ -23,9 +23,6 @@ helmCharts:
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sonarr.svg
                   namespace: media
                   app: sonarr
-                  widget:
-                    type: sonarr
-                    url: https://sonarr.hometheo.click
               - Plex:
                   href: https://plex.hometheo.click
                   description: Plex Media Server

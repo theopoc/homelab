@@ -11,9 +11,6 @@ metadata:
     gethomepage.dev/group: Media
     gethomepage.dev/icon: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/qbittorrent.svg"
     gethomepage.dev/name: QbitTorrent
-    gethomepage.dev/widget.type: "qbittorrent"
-    gethomepage.dev/widget.url: "https://torrent.hometheo.click"
-    # gethomepage.dev/widget.headers.X-Auth-Key: "your-secret-here"
     gethomepage.dev/pod-selector: ""
 spec:
   hostnames:
