@@ -15,6 +15,10 @@ helmCharts:
           size: 50Mi
           storageClass: "longhorn"
       config:
+        service:
+          annotations:
+            tailscale.com/expose: "true"
+            tailscale.com/hostname: "homepage"
         services:
           - Media:
               - Sonarr:
