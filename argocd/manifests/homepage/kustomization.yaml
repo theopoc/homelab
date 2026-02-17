@@ -93,11 +93,15 @@ helmCharts:
                   namespace: linkwarden
                   app: linkwarden
 
-          - Storage:
+          - Operations:
               - Longhorn:
                   href: http://longhorn.tail622099.ts.net/
                   description: Longhorn
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/longhorn.svg
+              - WUD:
+                  href: http://nas.tail622099.ts.net:3000/
+                  description: "What's Up Docker"
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/whats-up-docker.svg
         kubernetes:
           mode: cluster
           gateway: true
