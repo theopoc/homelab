@@ -65,6 +65,12 @@ spec:
         nodeExporter:
           enabled: true
         grafana:
+          additionalDataSources:
+            - name: Loki
+              type: loki
+              url: http://loki-gateway.monitoring.svc.cluster.local
+              access: proxy
+              isDefault: false
           sidecar:
             datasources:
               skipReload: false
