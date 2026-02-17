@@ -37,7 +37,7 @@ spec:
           config:
             enabled: true
             accessMode: ReadWriteOnce
-            size: 50Mi
+            size: 2Gi
             storageClass: "longhorn"
           media:
             enabled: true
