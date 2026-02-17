@@ -23,6 +23,12 @@ helmCharts:
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sonarr.svg
                   namespace: media
                   app: sonarr
+              - Jellyfin:
+                  href: https://jellyfin.hometheo.click
+                  description: Jellyfin
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/jellyfin.svg
+                  namespace: media
+                  app: jellyfin
               - Plex:
                   href: https://plex.hometheo.click
                   description: Plex Media Server
