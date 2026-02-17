@@ -40,16 +40,9 @@ spec:
             size: 50Mi
             storageClass: "longhorn"
           media:
-            enabled: false
-
-        volumes:
-          - name: media
-            persistentVolumeClaim:
-              claimName: media-qbittorrent-downloads
-        volumeMounts:
-          - name: media
-            mountPath: /media
-            readOnly: true
+            enabled: true
+            type: "pvc"
+            existingClaim: "media-qbittorrent-downloads"
 
         ingress:
           enabled: false
