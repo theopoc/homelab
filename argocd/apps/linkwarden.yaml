@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/TheoPoc/homelab
     targetRevision: HEAD
-    path: argocd/apps/linkwarden
+    path: argocd/manifests/linkwarden
   destination:
     server: https://kubernetes.default.svc
     namespace: linkwarden
