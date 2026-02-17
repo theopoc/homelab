@@ -89,7 +89,8 @@ unit "dns" {
       "grafana",
       "uptime",
       "file",
-      "link"
+      "link",
+      "jellyfin"
     ]
 
     # Get control plane IP from cluster output (for kube subdomain)
