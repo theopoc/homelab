@@ -14,11 +14,11 @@ helmCharts:
           accessMode: ReadWriteOnce
           size: 50Mi
           storageClass: "longhorn"
+      service:
+        annotations:
+          tailscale.com/expose: "true"
+          tailscale.com/hostname: "homepage"
       config:
-        service:
-          annotations:
-            tailscale.com/expose: "true"
-            tailscale.com/hostname: "homepage"
         services:
           - Media:
               - Sonarr:
