@@ -18,6 +18,9 @@ helmCharts:
         annotations:
           tailscale.com/expose: "true"
           tailscale.com/hostname: "homepage"
+      env:
+        - name: HOMEPAGE_ALLOWED_HOSTS
+          value: "*"
       config:
         services:
           - Media:
