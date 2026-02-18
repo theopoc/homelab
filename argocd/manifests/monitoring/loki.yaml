@@ -38,8 +38,6 @@ spec:
             volume_enabled: true
           ruler:
             enable_api: true
-        service:
-          enabled: true
         minio:
           enabled: false
 
