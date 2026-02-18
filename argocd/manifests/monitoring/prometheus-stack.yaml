@@ -95,9 +95,9 @@ spec:
           resources:
             requests:
               cpu: 13m
-              memory: 253Mi
+              memory: 780Mi
             limits:
-              memory: 253Mi
+              memory: 1Gi
           additionalDataSources:
             - name: Loki
               type: loki
