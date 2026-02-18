@@ -104,6 +104,10 @@ spec:
               url: http://loki-gateway
               access: proxy
               isDefault: false
+              jsonData:
+                httpHeaderName1: "X-Scope-OrgID"
+              secureJsonData:
+                httpHeaderValue1: "default"
           sidecar:
             datasources:
               skipReload: false
