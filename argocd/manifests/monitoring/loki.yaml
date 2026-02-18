@@ -11,9 +11,9 @@ spec:
     targetRevision: 6.53.0
     helm:
       valuesObject:
+        chunksCache:
+          enabled: false
         loki:
-          chunksCache:
-            enabled: false
           commonConfig:
             replication_factor: 1
           schemaConfig:
