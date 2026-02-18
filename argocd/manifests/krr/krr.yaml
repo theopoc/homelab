@@ -9,6 +9,13 @@ spec:
     chart: simple-krr-dashboard
     repoURL: https://devops-ia.github.io/helm-simple-krr-dashboard
     targetRevision: 1.3.0
+    valuesInline:
+      resources:
+        limits:
+          memory: 100Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
   destination:
     server: "https://kubernetes.default.svc"
     namespace: krr

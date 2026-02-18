@@ -52,10 +52,10 @@ spec:
 
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
+              cpu: 53m
+              memory: 100Mi
             limits:
-              memory: 512Mi
+              memory: 100Mi
 
           volumeMounts:
             - name: data
