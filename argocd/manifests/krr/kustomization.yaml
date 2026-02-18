@@ -14,13 +14,6 @@ helmCharts:
         requests:
           cpu: 10m
           memory: 100Mi
-      job:
-        resources:
-          limits:
-            memory: 100Mi
-          requests:
-            cpu: 10m
-            memory: 100Mi
 
 patches:
   - path: override-cluster-role.yaml
