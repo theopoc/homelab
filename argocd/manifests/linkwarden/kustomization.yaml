@@ -43,9 +43,9 @@ helmCharts:
       resources:
         requests:
           cpu: 694m
-          memory: 2770Mi
+          memory: 500Mi
         limits:
-          memory: 2770Mi
+          memory: 1Gi
 resources:
   - postgres-pvc.yaml
   - postgres-service.yaml

@@ -25,9 +25,9 @@ spec:
         resources:
           requests:
             cpu: 14m
-            memory: 2220Mi
+            memory: 50Mi
           limits:
-            memory: 2220Mi
+            memory: 200Mi
 
         nodeSelector:
           kubernetes.io/hostname: hometheo-control-plane-1
