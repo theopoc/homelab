@@ -40,7 +40,12 @@ helmCharts:
           keys:
             username: "postgres-user"
             password: "postgres-passwd"
-
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
 resources:
   - postgres-pvc.yaml
   - postgres-service.yaml
