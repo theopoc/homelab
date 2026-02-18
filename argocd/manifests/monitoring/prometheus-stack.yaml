@@ -16,6 +16,13 @@ spec:
         defaultRules:
           rules:
             kubeProxy: false
+        prometheusOperator:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+            limits:
+              memory: 100Mi
         alertmanager:
           enabled: true
           service:
@@ -60,11 +67,37 @@ spec:
                       {{ if .Annotations.description }}<b>Description:</b> {{ .Annotations.description }}{{ end }}
                       {{ end }}
           alertmanagerSpec:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 100Mi
             secrets:
               - alertmanager-telegram
+        kube-state-metrics:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+            limits:
+              memory: 100Mi
+        prometheus-node-exporter:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 101Mi
+            limits:
+              memory: 101Mi
         nodeExporter:
           enabled: true
         grafana:
+          resources:
+            requests:
+              cpu: 13m
+              memory: 253Mi
+            limits:
+              memory: 253Mi
           additionalDataSources:
             - name: Loki
               type: loki
@@ -84,6 +117,13 @@ spec:
             finalizers:
               - kubernetes.io/pvc-protection
         prometheus:
+          prometheusSpec:
+            resources:
+              requests:
+                cpu: 435m
+                memory: 1913Mi
+              limits:
+                memory: 1913Mi
           service:
             annotations:
               tailscale.com/expose: "true"

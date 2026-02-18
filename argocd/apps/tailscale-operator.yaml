@@ -15,6 +15,13 @@ spec:
       valuesObject:
         # OAuth credentials pre-created as 'operator-oauth' secret via SOPS
         # Leave clientId empty so the chart does not create the secret itself
+        operator:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+            limits:
+              memory: 100Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: tailscale

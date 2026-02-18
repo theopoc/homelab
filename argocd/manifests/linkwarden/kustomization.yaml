@@ -41,11 +41,11 @@ helmCharts:
             username: "postgres-user"
             password: "postgres-passwd"
       resources:
-        limits:
-          memory: 512Mi
         requests:
-          cpu: 100m
-          memory: 128Mi
+          cpu: 694m
+          memory: 2770Mi
+        limits:
+          memory: 2770Mi
 resources:
   - postgres-pvc.yaml
   - postgres-service.yaml

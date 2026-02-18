@@ -35,6 +35,13 @@ spec:
             name: "plex-claim"
             key: "plexserver.claimcode"
 
+          resources:
+            requests:
+              cpu: 10m
+              memory: 277Mi
+            limits:
+              memory: 277Mi
+
         nodeSelector:
           kubernetes.io/hostname: hometheo-control-plane-1
 

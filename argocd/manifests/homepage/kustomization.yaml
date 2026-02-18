@@ -8,6 +8,12 @@ helmCharts:
     releaseName: homepage
     namespace: homepage
     valuesInline:
+      resources:
+        requests:
+          cpu: 118m
+          memory: 136Mi
+        limits:
+          memory: 136Mi
       persistence:
         config:
           enabled: false

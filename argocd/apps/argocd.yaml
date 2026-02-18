@@ -44,19 +44,17 @@ spec:
             type: ClusterIP
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 23m
+              memory: 152Mi
             limits:
-              cpu: 500m
-              memory: 512Mi
+              memory: 152Mi
         controller:
           resources:
             requests:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 142m
+              memory: 1280Mi
             limits:
-              cpu: 1000m
-              memory: 1Gi
+              memory: 1280Mi
         repoServer:
           # KSOPS support for SOPS-encrypted secrets
           env:
@@ -71,27 +69,24 @@ spec:
               mountPath: /sops/age
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 98m
+              memory: 265Mi
             limits:
-              cpu: 500m
-              memory: 512Mi
+              memory: 265Mi
         applicationSet:
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 10m
+              memory: 100Mi
             limits:
-              cpu: 500m
-              memory: 512Mi
+              memory: 100Mi
         redis:
           resources:
             requests:
-              cpu: 100m
-              memory: 64Mi
+              cpu: 17m
+              memory: 100Mi
             limits:
-              cpu: 200m
-              memory: 128Mi
+              memory: 100Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

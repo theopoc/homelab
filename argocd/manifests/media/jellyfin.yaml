@@ -18,11 +18,11 @@ spec:
           pullPolicy: IfNotPresent
 
         resources:
-          limits:
-            memory: 512Mi
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 293m
+            memory: 1160Mi
+          limits:
+            memory: 1160Mi
 
         jellyfin:
           env:
