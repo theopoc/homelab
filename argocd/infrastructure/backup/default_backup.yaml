@@ -1,0 +1,11 @@
+apiVersion: longhorn.io/v1beta2
+kind: BackupTarget
+metadata:
+  finalizers:
+  - longhorn.io
+  name: default
+  namespace: longhorn-system
+spec:
+  backupTargetURL: s3://homelab-backup@garage/
+  credentialSecret: nas-s3   # reference to kubernetes secret name
+  pollInterval: 5m0s
