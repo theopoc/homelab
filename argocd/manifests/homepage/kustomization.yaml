@@ -108,6 +108,10 @@ helmCharts:
                   href: http://nas.tail622099.ts.net:3000/
                   description: "What's Up Docker"
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/whats-up-docker.svg
+              - Garage:
+                  href: http://nas.tail622099.ts.net:3909/
+                  description: "Garage S3 compatible"
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/garage.svg
         kubernetes:
           mode: cluster
           gateway: true
