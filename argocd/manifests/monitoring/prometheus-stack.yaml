@@ -125,8 +125,6 @@ spec:
               - kubernetes.io/pvc-protection
         prometheus:
           prometheusSpec:
-            serviceMonitorSelector: {}  # Découvre TOUS les ServiceMonitors
-            serviceMonitorNamespaceSelector: {}  # Dans TOUS les namespaces
             resources:
               requests:
                 cpu: 435m
