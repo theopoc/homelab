@@ -57,6 +57,11 @@ unit "cluster" {
 
     # Longhorn Helm custom values (expose UI via Tailscale)
     longhorn_helm_values = {
+      metrics = {
+        serviceMonitor = {
+          enabled = true
+        }
+      }
       service = {
         ui = {
           annotations = {
