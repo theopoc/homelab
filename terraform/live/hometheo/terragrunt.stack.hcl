@@ -60,6 +60,9 @@ unit "cluster" {
       metrics = {
         serviceMonitor = {
           enabled = true
+          additionalLabels = {
+            release = "prometheus-stack"
+          }
         }
       }
       service = {
