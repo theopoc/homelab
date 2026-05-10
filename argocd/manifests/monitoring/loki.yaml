@@ -13,6 +13,8 @@ spec:
       valuesObject:
         chunksCache:
           enabled: false
+        resultsCache:
+          enabled: false
         loki:
           commonConfig:
             replication_factor: 1

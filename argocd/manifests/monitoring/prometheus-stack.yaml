@@ -172,9 +172,9 @@ spec:
           resources:
             requests:
               cpu: 13m
-              memory: 780Mi
+              memory: 256Mi
             limits:
-              memory: 1Gi
+              memory: 512Mi
           deleteDatasources:
             - name: Loki
               orgId: 1
@@ -204,10 +204,10 @@ spec:
           prometheusSpec:
             resources:
               requests:
-                cpu: 435m
-                memory: 1913Mi
+                cpu: 200m
+                memory: 1500Mi
               limits:
-                memory: 1913Mi
+                memory: 1500Mi
           service:
             annotations:
               tailscale.com/expose: "true"
