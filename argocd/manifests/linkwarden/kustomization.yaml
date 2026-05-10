@@ -31,6 +31,10 @@ helmCharts:
           value: "true"
         - name: EMAIL_FROM
           value: "noreply@linkwarden"
+        - name: MAX_WORKERS
+          value: "1"
+        - name: ARCHIVE_TAKE_COUNT
+          value: "2"
       externalPostgresql:
         host: postgresql
         existingSecret:
