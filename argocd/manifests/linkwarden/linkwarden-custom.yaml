@@ -24,6 +24,10 @@ spec:
           exit 1
       containers:
       - name: linkwarden
+        livenessProbe:
+          initialDelaySeconds: 13
+        readinessProbe:
+          initialDelaySeconds: 13
         env:
         - name: EMAIL_SERVER
           valueFrom:
