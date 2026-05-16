@@ -46,7 +46,7 @@ helmCharts:
             password: "postgres-passwd"
       resources:
         requests:
-          cpu: 694m
+          cpu: 250m
           memory: 500Mi
         limits:
           memory: 1536Mi
@@ -54,7 +54,7 @@ resources:
   - postgres-pvc.yaml
   - postgres-service.yaml
   - postgres-deployment.yaml
-  - vpa.yaml
+  - hpa.yaml
 
 patches:
   - target:
