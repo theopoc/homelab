@@ -49,11 +49,12 @@ helmCharts:
           cpu: 694m
           memory: 500Mi
         limits:
-          memory: 1Gi
+          memory: 1536Mi
 resources:
   - postgres-pvc.yaml
   - postgres-service.yaml
   - postgres-deployment.yaml
+  - vpa.yaml
 
 patches:
   - target:
