@@ -34,7 +34,7 @@ helmCharts:
         - name: MAX_WORKERS
           value: "1"
         - name: ARCHIVE_TAKE_COUNT
-          value: "2"
+          value: "1"
       externalPostgresql:
         host: postgresql
         existingSecret:
