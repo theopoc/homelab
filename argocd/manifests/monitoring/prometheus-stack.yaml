@@ -23,18 +23,12 @@ spec:
                 rules:
                   - alert: LonghornVolumeActualSpaceUsedWarning
                     annotations:
-                      description: The actual space used by Longhorn volume {{$labels.persistentvolumeclaim}} ({{$labels.namespace}}) on {{$labels.node}} is at {{$value}}% capacity for more than 5 minutes.
+                      description: The actual space used by Longhorn volume {{$labels.pvc}} ({{$labels.pvc_namespace}}) on {{$labels.node}} is at {{$value}}% capacity for more than 5 minutes.
                       summary: The actual used space of Longhorn volume is over 90% of the capacity.
-                    expr: |
-                      (
-                        (longhorn_volume_actual_size_bytes / longhorn_volume_capacity_bytes) * 100 > 90
-                      ) * on(volume) group_left(persistentvolumeclaim, namespace)
-                      (
-                        label_replace(kube_persistentvolumeclaim_info, "volume", "$1", "volumename", "(.*)")
-                      )
+                    expr: (longhorn_volume_actual_size_bytes / longhorn_volume_capacity_bytes) * 100 > 90
                     for: 5m
                     labels:
-                      issue: The actual used space of Longhorn volume {{$labels.persistentvolumeclaim}} in {{$labels.namespace}} on {{$labels.node}} is high.
+                      issue: The actual used space of Longhorn volume {{$labels.pvc}} in {{$labels.pvc_namespace}} on {{$labels.node}} is high.
                       severity: warning
                   - alert: LonghornVolumeStatusCritical
                     annotations:
