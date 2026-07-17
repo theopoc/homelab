@@ -35,6 +35,8 @@ helmCharts:
           value: "1"
         - name: ARCHIVE_TAKE_COUNT
           value: "1"
+        - name: RSS_SUBSCRIPTION_LIMIT_PER_USER
+          value: "150"
       externalPostgresql:
         host: postgresql
         existingSecret:
