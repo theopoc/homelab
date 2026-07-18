@@ -16,6 +16,7 @@
 - Set `NODE_OPTIONS` to string `"--max-old-space-size=400"`.
 - Retain exactly one `ARCHIVE_TAKE_COUNT` with string value `"1"`.
 - Replace chart's literal `${VAR}` `DATABASE_URL` with Kubernetes `$(VAR)` expansion.
+- Increase container memory limit from `1536Mi` to `2Gi`; retain `500Mi` request.
 
 ---
 
@@ -46,6 +47,17 @@ Add under `valuesInline`:
 ```yaml
       image:
         tag: "v2.15.1"
+```
+
+Set resource limit while retaining existing request:
+
+```yaml
+      resources:
+        requests:
+          cpu: 250m
+          memory: 500Mi
+        limits:
+          memory: 2Gi
 ```
 
 Add before existing `ARCHIVE_TAKE_COUNT`:
@@ -97,6 +109,7 @@ Run:
 linkwarden_render=$(mktemp)
 rtk kustomize build --enable-helm argocd/manifests/linkwarden > "$linkwarden_render"
 rtk rg -n 'image: ghcr.io/linkwarden/linkwarden:v2.15.1' "$linkwarden_render"
+rtk rg -n 'memory: 2Gi' "$linkwarden_render"
 rtk rg -n -A1 'name: (MALLOC_ARENA_MAX|NODE_OPTIONS|ARCHIVE_TAKE_COUNT)' "$linkwarden_render"
 rtk rg -n -A1 'name: DATABASE_URL' "$linkwarden_render"
 ```

@@ -32,6 +32,11 @@ referenced PostgreSQL variables, which remain sourced from existing Secrets.
 If chart layout changes, JSON `test` operations make manifest rendering fail
 instead of patching wrong field.
 
+Increase Linkwarden container memory limit from `1536Mi` to `2Gi`. Live
+`v2.15.1` evidence showed repeatable `OOMKilled` exits immediately after worker
+launched Chromium despite requested allocator and Node.js heap settings. Keep
+memory request at `500Mi`; `2Gi` is smallest approved limit increase to test.
+
 ## Verification
 
 Run repository pre-commit checks. Render Kustomize manifests with Helm support
@@ -40,3 +45,5 @@ and confirm generated Linkwarden Deployment uses image
 environment variables occur exactly once with exact string values.
 Confirm rendered `DATABASE_URL` uses `$(VAR)` references after referenced
 PostgreSQL variables, then verify live pod reaches Ready state without restart.
+Monitor at least one link-processing/browser cycle and confirm restart counter
+does not increase.
