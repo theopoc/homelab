@@ -8,6 +8,8 @@ helmCharts:
     releaseName: linkwarden
     namespace: linkwarden
     valuesInline:
+      image:
+        tag: "v2.15.1"
       persistence:
         enabled: false
         size: 100Mi
@@ -33,6 +35,10 @@ helmCharts:
           value: "noreply@linkwarden"
         - name: MAX_WORKERS
           value: "1"
+        - name: MALLOC_ARENA_MAX
+          value: "2"
+        - name: NODE_OPTIONS
+          value: "--max-old-space-size=400"
         - name: ARCHIVE_TAKE_COUNT
           value: "1"
         - name: RSS_SUBSCRIPTION_LIMIT_PER_USER
