@@ -15,6 +15,7 @@
 - Set `MALLOC_ARENA_MAX` to string `"2"`.
 - Set `NODE_OPTIONS` to string `"--max-old-space-size=400"`.
 - Retain exactly one `ARCHIVE_TAKE_COUNT` with string value `"1"`.
+- Replace chart's literal `${VAR}` `DATABASE_URL` with Kubernetes `$(VAR)` expansion.
 
 ---
 
@@ -58,6 +59,25 @@ Add before existing `ARCHIVE_TAKE_COUNT`:
           value: "1"
 ```
 
+Add guarded JSON operations under `patches` in
+`argocd/manifests/linkwarden/kustomization.yaml`:
+
+```yaml
+  - target:
+      kind: Deployment
+      name: linkwarden
+    patch: |-
+      - op: test
+        path: /spec/template/spec/containers/0/name
+        value: linkwarden
+      - op: test
+        path: /spec/template/spec/containers/0/env/8/name
+        value: DATABASE_URL
+      - op: replace
+        path: /spec/template/spec/containers/0/env/8/value
+        value: "postgresql://$(LINKWARDEN_POSTGRES_USER):$(LINKWARDEN_POSTGRES_PASSWORD)@$(LINKWARDEN_POSTGRES_HOST):$(LINKWARDEN_POSTGRES_PORT)/$(LINKWARDEN_POSTGRES_DATABASE)"
+```
+
 - [ ] **Step 3: Validate YAML and whitespace**
 
 Run:
@@ -78,9 +98,11 @@ linkwarden_render=$(mktemp)
 rtk kustomize build --enable-helm argocd/manifests/linkwarden > "$linkwarden_render"
 rtk rg -n 'image: ghcr.io/linkwarden/linkwarden:v2.15.1' "$linkwarden_render"
 rtk rg -n -A1 'name: (MALLOC_ARENA_MAX|NODE_OPTIONS|ARCHIVE_TAKE_COUNT)' "$linkwarden_render"
+rtk rg -n -A1 'name: DATABASE_URL' "$linkwarden_render"
 ```
 
 Expected: exact image appears once. Each requested variable appears once with values `"2"`, `"--max-old-space-size=400"`, and `"1"` respectively.
+`DATABASE_URL` uses `$(LINKWARDEN_POSTGRES_*)` references, not `${LINKWARDEN_POSTGRES_*}`.
 
 - [ ] **Step 5: Commit and push**
 

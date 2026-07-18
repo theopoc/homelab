@@ -22,9 +22,21 @@ Add these non-secret values to existing `valuesInline.extraEnv`:
 
 Retain existing `ARCHIVE_TAKE_COUNT` value `"1"`; do not duplicate it.
 
+Linkwarden `v2.15.1` invokes Prisma directly during startup. Helm chart `1.0.14`
+renders `DATABASE_URL` with shell-style `${VAR}` references, which remain
+literal and prevent Prisma from reaching PostgreSQL. Extend existing strategic
+Deployment customization with guarded JSON operations that verify chart's
+container and environment positions, then replace value using Kubernetes
+dependent-variable syntax `$(VAR)`. Replacement preserves position after
+referenced PostgreSQL variables, which remain sourced from existing Secrets.
+If chart layout changes, JSON `test` operations make manifest rendering fail
+instead of patching wrong field.
+
 ## Verification
 
 Run repository pre-commit checks. Render Kustomize manifests with Helm support
 and confirm generated Linkwarden Deployment uses image
 `ghcr.io/linkwarden/linkwarden:v2.15.1`. Confirm all three requested
 environment variables occur exactly once with exact string values.
+Confirm rendered `DATABASE_URL` uses `$(VAR)` references after referenced
+PostgreSQL variables, then verify live pod reaches Ready state without restart.
