@@ -51,6 +51,40 @@ spec:
 
         singleBinary:
           replicas: 1
+          annotations:
+            argocd.argoproj.io/sync-options: ServerSideApply=true
+          initContainers:
+            - name: clear-oversized-wal-once
+              image: docker.io/library/busybox:1.37.0
+              command:
+                - sh
+                - -ec
+                - |
+                  wal_dir=/var/loki/wal
+                  marker=/var/loki/.wal-cleaned-20260719
+
+                  if [ -e "${marker}" ]; then
+                    exit 0
+                  fi
+
+                  if [ -d "${wal_dir}" ]; then
+                    find "${wal_dir}" -xdev -mindepth 1 -delete
+                  fi
+
+                  touch "${marker}"
+                  sync
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                readOnlyRootFilesystem: true
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+              volumeMounts:
+                - name: storage
+                  mountPath: /var/loki
           resources:
             requests:
               cpu: 100m
