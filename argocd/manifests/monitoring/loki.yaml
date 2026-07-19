@@ -38,7 +38,7 @@ spec:
           limits_config:
             allow_structured_metadata: true
             volume_enabled: true
-            retention_period: 168h
+            retention_period: 24h
           compactor:
             retention_enabled: true
             delete_request_store: filesystem
@@ -50,6 +50,8 @@ spec:
         deploymentMode: SingleBinary
 
         singleBinary:
+          annotations:
+            argocd.argoproj.io/sync-options: Force=true,Replace=true
           replicas: 1
           resources:
             requests:
