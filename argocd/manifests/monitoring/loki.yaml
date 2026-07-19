@@ -50,8 +50,6 @@ spec:
         deploymentMode: SingleBinary
 
         singleBinary:
-          annotations:
-            argocd.argoproj.io/sync-options: Force=true,Replace=true
           replicas: 1
           resources:
             requests:
