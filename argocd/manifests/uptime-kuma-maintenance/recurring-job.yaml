@@ -1,0 +1,12 @@
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: uptime-kuma-cleanup-trim
+  namespace: longhorn-system
+spec:
+  cron: "*/5 * * * *"
+  task: filesystem-trim
+  groups:
+    - uptime-kuma-cleanup
+  retain: 0
+  concurrency: 1
