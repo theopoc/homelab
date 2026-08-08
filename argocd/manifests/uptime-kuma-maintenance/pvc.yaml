@@ -9,7 +9,10 @@ metadata:
     app.kubernetes.io/instance: uptime-kuma
     app.kubernetes.io/version: "1.23.17"
     app.kubernetes.io/managed-by: Helm
+    # Preserve the existing controller-managed default group on the live PVC:
+    # it assigns recurring backup and is intentionally not declared or removed here.
     recurring-job.longhorn.io/source: enabled
+    # This additional group is the sole selector for uptime-kuma-cleanup-trim.
     recurring-job-group.longhorn.io/uptime-kuma-cleanup: enabled
 spec:
   accessModes:
