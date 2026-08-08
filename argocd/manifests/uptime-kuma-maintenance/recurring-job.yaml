@@ -4,7 +4,7 @@ metadata:
   name: uptime-kuma-cleanup-trim
   namespace: longhorn-system
 spec:
-  cron: "*/5 * * * *"
+  cron: "10 5 * * *"
   task: filesystem-trim
   groups:
     - uptime-kuma-cleanup
