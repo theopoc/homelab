@@ -31,11 +31,26 @@ CREATE TABLE heartbeat (
   time DATETIME NOT NULL,
   msg TEXT
 );
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY,
+  username TEXT NOT NULL
+);
+CREATE TABLE notification (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL
+);
+CREATE TABLE status_page (
+  id INTEGER PRIMARY KEY,
+  slug TEXT NOT NULL
+);
 INSERT INTO setting(key, value, type) VALUES ('keepDataPeriodDays', '180', 'general');
 INSERT INTO monitor(id, name) VALUES (1, 'kept-monitor');
 INSERT INTO heartbeat(monitor_id, time, msg) VALUES
   (1, datetime('now', '-31 days'), 'delete-me'),
   (1, datetime('now', '-29 days'), 'keep-me');
+INSERT INTO user(id, username) VALUES (1, 'sentinel-user');
+INSERT INTO notification(id, name) VALUES (1, 'sentinel-notification');
+INSERT INTO status_page(id, slug) VALUES (1, 'sentinel-status-page');
 PRAGMA journal_mode=WAL;
 SQL
 }
@@ -51,6 +66,9 @@ test "$(sqlite3 "$data_dir/kuma.db" "SELECT value FROM setting WHERE key='keepDa
 test "$(sqlite3 "$data_dir/kuma.db" "SELECT count(*) FROM heartbeat WHERE msg='delete-me';")" = "0"
 test "$(sqlite3 "$data_dir/kuma.db" "SELECT count(*) FROM heartbeat WHERE msg='keep-me';")" = "1"
 test "$(sqlite3 "$data_dir/kuma.db" "SELECT count(*) FROM monitor;")" = "1"
+test "$(sqlite3 "$data_dir/kuma.db" "SELECT username FROM user WHERE id=1;")" = "sentinel-user"
+test "$(sqlite3 "$data_dir/kuma.db" "SELECT name FROM notification WHERE id=1;")" = "sentinel-notification"
+test "$(sqlite3 "$data_dir/kuma.db" "SELECT slug FROM status_page WHERE id=1;")" = "sentinel-status-page"
 test "$(sqlite3 "$data_dir/kuma.db" "PRAGMA integrity_check;")" = "ok"
 test -f "$data_dir/.maintenance/retention-30d-20260808.done"
 printf '%s\n' "successful purge test"
@@ -100,6 +118,8 @@ real_sqlite3=$(command -v sqlite3)
 } > "$failure_bin_dir/sqlite3"
 chmod +x "$failure_bin_dir/sqlite3"
 touch "$tmp_dir/fail-final-validation"
+: > "$failure_data_dir/kuma.db.new-wal"
+: > "$failure_data_dir/kuma.db.new-shm"
 
 set +e
 DATA_DIR="$failure_data_dir" WORK_DIR="$failure_work_dir" SAFETY_BYTES=0 \
@@ -114,6 +134,8 @@ test "$(cksum "$failure_data_dir/kuma.db")" = "$failure_checksum_before"
 test "$(sqlite3 "$failure_data_dir/kuma.db" "SELECT value FROM setting WHERE key='keepDataPeriodDays';")" = "180"
 test "$(sqlite3 "$failure_data_dir/kuma.db" "SELECT count(*) FROM heartbeat WHERE msg='delete-me';")" = "1"
 test ! -e "$failure_data_dir/kuma.db.new"
+test ! -e "$failure_data_dir/kuma.db.new-wal"
+test ! -e "$failure_data_dir/kuma.db.new-shm"
 test ! -e "$failure_data_dir/kuma.db.pre-retention-30d-20260808"
 test ! -e "$failure_data_dir/.maintenance/retention-30d-20260808.done"
 printf '%s\n' "post-swap rollback test"
@@ -142,3 +164,21 @@ test "$(sqlite3 "$dual_data_dir/kuma.db" "SELECT value FROM setting WHERE key='k
 test ! -e "$dual_data_dir/kuma.db.pre-retention-30d-20260808"
 test -f "$dual_data_dir/.maintenance/retention-30d-20260808.done"
 printf '%s\n' "dual-database interruption recovery test"
+
+stale_data_dir="$tmp_dir/stale-data"
+stale_work_dir="$tmp_dir/stale-work"
+create_fixture "$stale_data_dir"
+mkdir -p "$stale_work_dir"
+mv "$stale_data_dir/kuma.db" "$stale_data_dir/kuma.db.pre-retention-30d-20260808"
+dd if=/dev/zero of="$stale_data_dir/kuma.db.new" bs=1048576 count=4 >/dev/null 2>&1
+available_bytes_with_stale_new=$(df -Pk "$stale_data_dir" | awk 'NR == 2 { print $4 * 1024 }')
+retry_safety_bytes=$((available_bytes_with_stale_new + 1))
+
+DATA_DIR="$stale_data_dir" WORK_DIR="$stale_work_dir" SAFETY_BYTES="$retry_safety_bytes" sh "$script_dir/maintenance.sh"
+test "$(sqlite3 "$stale_data_dir/kuma.db" "SELECT value FROM setting WHERE key='keepDataPeriodDays';")" = "30"
+test ! -e "$stale_data_dir/kuma.db.pre-retention-30d-20260808"
+test ! -e "$stale_data_dir/kuma.db.new"
+test ! -e "$stale_data_dir/kuma.db.new-wal"
+test ! -e "$stale_data_dir/kuma.db.new-shm"
+test -f "$stale_data_dir/.maintenance/retention-30d-20260808.done"
+printf '%s\n' "stale replacement retry test"

@@ -107,6 +107,7 @@ sqlite3 "$source_copy" "VACUUM;"
 mv "$source_copy" "$compact_db"
 
 validate_database "$compact_db"
+rm -f "$new_db" "$new_db-wal" "$new_db-shm"
 heartbeat_count_after=$(sqlite3 "$compact_db" "SELECT count(*) FROM heartbeat;")
 is_decimal "$heartbeat_count_after" || fail "could not record post-cleanup heartbeat count"
 removed_heartbeat_count=$((heartbeat_count_before - heartbeat_count_after))
@@ -117,13 +118,11 @@ is_decimal "$compact_size" || fail "could not determine compact database size"
 is_decimal "$available_bytes" || fail "could not determine available PVC space"
 test $((compact_size + safety_bytes)) -le "$available_bytes" || fail "insufficient PVC space for safe replacement"
 
-rm -f "$new_db"
-
 on_exit() {
     exit_status=$1
 
     if [ "$exit_status" -ne 0 ]; then
-        rm -f "$new_db" || :
+        rm -f "$new_db" "$new_db-wal" "$new_db-shm" || :
         if [ -e "$rollback_db" ]; then
             if [ -e "$db" ]; then
                 rm -f "$db" "$db-shm" "$db-wal" || :
@@ -147,7 +146,7 @@ validate_database "$new_db"
 mv "$new_db" "$db"
 sync
 validate_database "$db"
-rm -f "$rollback_db" "$db-shm" "$db-wal"
+rm -f "$rollback_db" "$db-shm" "$db-wal" "$new_db-wal" "$new_db-shm"
 
 mkdir -p "$marker_dir"
 marker_tmp="$marker_dir/.${maintenance_id}.done.$$"
