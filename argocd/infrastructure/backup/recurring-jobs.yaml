@@ -1,0 +1,32 @@
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: c-q23ufh
+  namespace: longhorn-system
+spec:
+  cron: "* * * * *"
+  task: backup
+  groups:
+    - media
+  retain: 1
+  concurrency: 1
+  labels:
+    app: sonarr
+---
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: c-l2io05
+  namespace: longhorn-system
+spec:
+  cron: "30 6 * * *"
+  task: filesystem-trim
+  groups:
+    - default
+    - linkwarden
+    - media
+    - monitoring
+  retain: 0
+  concurrency: 1
+  labels:
+    operation: trim
