@@ -3,8 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: uptime-kuma-pvc
   namespace: uptime-kuma
-  annotations:
-    argocd.argoproj.io/sync-options: Force=true,Replace=true
   labels:
     helm.sh/chart: uptime-kuma-2.24.0
     app.kubernetes.io/name: uptime-kuma
