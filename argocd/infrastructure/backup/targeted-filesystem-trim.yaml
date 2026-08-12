@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: longhorn-targeted-filesystem-trim-20260812-v5
+  name: longhorn-targeted-filesystem-trim-20260812-v6
   namespace: longhorn-system
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -78,6 +78,18 @@ spec:
               done
 
               sleep 5
+
+              for volume in ${volumes}; do
+                echo "Trim ${volume} after local snapshot deletion"
+                curl --fail --silent --show-error \
+                  --connect-timeout 5 \
+                  --max-time 300 \
+                  --request POST \
+                  --header 'Content-Type: application/json' \
+                  --data '{}' \
+                  "${api}/volumes/${volume}?action=trimFilesystem" \
+                  >/dev/null
+              done
 
               for volume in ${volumes}; do
                 echo "Purge removed snapshots for ${volume}"
