@@ -4,7 +4,9 @@ metadata:
   name: s3-nas
   namespace: "longhorn-system"
   annotations:
-    tailscale.com/tailnet-ip: "100.124.201.69"
+    # Temporary recovery relay: MacBook Tailscale Serve forwards this port to
+    # Garage on the NAS LAN address while the NAS node key is expired.
+    tailscale.com/tailnet-ip: "100.85.77.101"
 spec:
   type: ClusterIP
   ports:
