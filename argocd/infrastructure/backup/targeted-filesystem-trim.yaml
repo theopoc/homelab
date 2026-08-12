@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: longhorn-targeted-filesystem-trim-20260812-v2
+  name: longhorn-targeted-filesystem-trim-20260812-v3
   namespace: longhorn-system
   annotations:
     argocd.argoproj.io/sync-wave: "1"
