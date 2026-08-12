@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: longhorn-targeted-filesystem-trim-20260812-v4
+  name: longhorn-targeted-filesystem-trim-20260812-v5
   namespace: longhorn-system
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -50,6 +50,30 @@ spec:
                   --header 'Content-Type: application/json' \
                   --data '{}' \
                   "${api}/volumes/${volume}?action=trimFilesystem" \
+                  >/dev/null
+              done
+
+              echo "Delete backed-up local Uptime Kuma snapshot"
+              curl --fail --silent --show-error \
+                --connect-timeout 5 \
+                --max-time 30 \
+                --request POST \
+                --header 'Content-Type: application/json' \
+                --data '{"name":"c-s2q8hy-0626d1f1-ffd0-45c2-841b-65094faff35f"}' \
+                "${api}/volumes/pvc-1ed1345c-4bc0-4eae-b2f5-4d4a11224d14?action=snapshotCRDelete" \
+                >/dev/null
+
+              echo "Delete backed-up and failed local Sonarr snapshots"
+              for snapshot in \
+                c-q23ufh-8b9a4461-d5a1-4c04-b84e-1ab5ec6b55d6 \
+                c-q23ufh-e640effe-b5f1-4660-bb8a-d397a0f16e23; do
+                curl --fail --silent --show-error \
+                  --connect-timeout 5 \
+                  --max-time 30 \
+                  --request POST \
+                  --header 'Content-Type: application/json' \
+                  --data "{\"name\":\"${snapshot}\"}" \
+                  "${api}/volumes/pvc-d0b32529-4fc3-4bcb-ae69-90f1b6f7ed14?action=snapshotCRDelete" \
                   >/dev/null
               done
 
