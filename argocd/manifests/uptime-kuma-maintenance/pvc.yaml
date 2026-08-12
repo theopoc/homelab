@@ -3,21 +3,23 @@ kind: PersistentVolumeClaim
 metadata:
   name: uptime-kuma-pvc
   namespace: uptime-kuma
+  annotations:
+    argocd.argoproj.io/sync-options: Force=true,Replace=true
   labels:
     helm.sh/chart: uptime-kuma-2.24.0
     app.kubernetes.io/name: uptime-kuma
     app.kubernetes.io/instance: uptime-kuma
     app.kubernetes.io/version: "1.23.17"
     app.kubernetes.io/managed-by: Helm
-    # Preserve the existing controller-managed default group on the live PVC:
-    # it assigns recurring backup and is intentionally not declared or removed here.
+    # Keep recurring job assignments synchronized from this PVC to its restored volume.
     recurring-job.longhorn.io/source: enabled
+    recurring-job.longhorn.io/c-s2q8hy: enabled
     # This additional group is the sole selector for uptime-kuma-cleanup-trim.
     recurring-job-group.longhorn.io/uptime-kuma-cleanup: enabled
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: longhorn-uptime-kuma-restore
   volumeMode: Filesystem
   resources:
     requests:

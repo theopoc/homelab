@@ -1,0 +1,21 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-uptime-kuma-restore
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+parameters:
+  backupTargetName: default
+  dataEngine: v1
+  dataLocality: disabled
+  disableRevisionCounter: "true"
+  fromBackup: 's3://homelab-backup@garage/?backup=backup-66af7108f8c74c7e&volume=pvc-3918e9b9-26ff-44e7-a82f-a8439fdca25b'
+  fsType: ext4
+  numberOfReplicas: "3"
+  recurringJobSelector: '[{"name":"c-s2q8hy","isGroup":false},{"name":"uptime-kuma-cleanup","isGroup":true}]'
+  staleReplicaTimeout: "30"
+  unmapMarkSnapChainRemoved: ignored
