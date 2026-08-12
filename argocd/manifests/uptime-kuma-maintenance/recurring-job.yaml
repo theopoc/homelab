@@ -17,7 +17,7 @@ metadata:
   name: c-s2q8hy
   namespace: longhorn-system
 spec:
-  cron: "* * * * *"
+  cron: "5 5 * * *"
   task: backup
   groups: []
   retain: 1
