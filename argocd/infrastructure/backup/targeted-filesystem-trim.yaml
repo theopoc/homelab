@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: longhorn-targeted-filesystem-trim-20260812-v3
+  name: longhorn-targeted-filesystem-trim-20260812-v4
   namespace: longhorn-system
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -50,5 +50,19 @@ spec:
                   --header 'Content-Type: application/json' \
                   --data '{}' \
                   "${api}/volumes/${volume}?action=trimFilesystem" \
+                  >/dev/null
+              done
+
+              sleep 5
+
+              for volume in ${volumes}; do
+                echo "Purge removed snapshots for ${volume}"
+                curl --fail --silent --show-error \
+                  --connect-timeout 5 \
+                  --max-time 30 \
+                  --request POST \
+                  --header 'Content-Type: application/json' \
+                  --data '{}' \
+                  "${api}/volumes/${volume}?action=snapshotPurge" \
                   >/dev/null
               done
