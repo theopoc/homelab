@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: longhorn-targeted-filesystem-trim-20260812
+  name: longhorn-targeted-filesystem-trim-20260812-v2
   namespace: longhorn-system
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: longhorn-targeted-filesystem-trim
+        longhorn.io/job-task: filesystem-trim
     spec:
       restartPolicy: Never
       containers:
@@ -31,6 +32,8 @@ spec:
               for volume in ${volumes}; do
                 echo "Enable snapshot-chain removal for ${volume}"
                 curl --fail --silent --show-error \
+                  --connect-timeout 5 \
+                  --max-time 30 \
                   --request POST \
                   --header 'Content-Type: application/json' \
                   --data '{"unmapMarkSnapChainRemoved":"enabled"}' \
@@ -41,6 +44,8 @@ spec:
               for volume in ${volumes}; do
                 echo "Trim ${volume}"
                 curl --fail --silent --show-error \
+                  --connect-timeout 5 \
+                  --max-time 300 \
                   --request POST \
                   --header 'Content-Type: application/json' \
                   --data '{}' \
