@@ -3,13 +3,49 @@ kind: Service
 metadata:
   name: s3-nas
   namespace: "longhorn-system"
-  annotations:
-    # Temporary recovery relay: MacBook Tailscale Serve forwards this port to
-    # Garage on the NAS LAN address while the NAS node key is expired.
-    tailscale.com/tailnet-ip: "100.85.77.101"
 spec:
   type: ClusterIP
+  selector:
+    app: garage-recovery-relay
   ports:
     - name: s3
       port: 3900
-      targetPort: 3900
+      targetPort: s3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garage-recovery-relay
+  namespace: longhorn-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage-recovery-relay
+  template:
+    metadata:
+      labels:
+        app: garage-recovery-relay
+    spec:
+      containers:
+        - name: chisel
+          image: jpillora/chisel:1.10.1
+          args:
+            - server
+            - --reverse
+            - --port
+            - "8080"
+          ports:
+            - name: control
+              containerPort: 8080
+            - name: s3
+              containerPort: 3900
+          readinessProbe:
+            tcpSocket:
+              port: control
+          resources:
+            requests:
+              cpu: 5m
+              memory: 16Mi
+            limits:
+              memory: 64Mi
