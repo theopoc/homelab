@@ -9,3 +9,4 @@ spec:
   backupTargetURL: s3://homelab-backup@garage/
   credentialSecret: nas-s3   # reference to kubernetes secret name
   pollInterval: 5m0s
+  syncRequestedAt: "2026-08-12T19:12:30Z"
