@@ -88,6 +88,10 @@ spec:
               value: https://opengym.hometheo.click
             - name: RP_NAME
               value: openGym
+            - name: ADMIN_UIDS
+              value: OdoPKb9M6EXcvZGe
+            - name: INVITE_ONLY
+              value: "1"
             - name: ALLOW_GUEST
               value: "0"
             - name: DATA_DIR
