@@ -88,6 +88,8 @@ spec:
               value: https://opengym.hometheo.click
             - name: RP_NAME
               value: openGym
+            - name: ALLOW_GUEST
+              value: "0"
             - name: DATA_DIR
               value: /data
             - name: PORT
