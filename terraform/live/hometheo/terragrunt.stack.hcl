@@ -97,7 +97,8 @@ unit "dns" {
       "grafana",
       "uptime",
       "file",
-      "link"
+      "link",
+      "opengym"
     ]
 
     # Get control plane IP from cluster output (for kube subdomain)
